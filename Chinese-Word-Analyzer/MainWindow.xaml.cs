@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -26,7 +27,9 @@ namespace Chinese_Word_Analyzer
             LoadLanguagesAndBuildLanguageMenu();
             RefreshLanguageMenuAndLanguageSetting(ResetLanguageResource(GetSettedOrSystemLanguage()));
 
+            Worker.WorkerReportsProgress = true;
             Worker.DoWork += new DoWorkEventHandler(WorkerDoWork);
+            Worker.ProgressChanged += new ProgressChangedEventHandler(WorkerProgressChanged);
             Worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(WorkerCompleted);
         }
 
@@ -110,14 +113,57 @@ namespace Chinese_Word_Analyzer
             Properties.Settings.Default.LanguageResourceKey = LanguageResourceKey;
         }
 
+        private ChineseWordDataSource LoadDataSource(string FileName, BackgroundWorker worker)
+        {
+            this.Dispatcher.Invoke((Action)delegate ()
+            {
+                StatusText.Text = App.Current.FindResource("StatusBar.ParsingDataSource") as string;
+            });
+
+            ChineseWordDataSource Data = new ChineseWordDataSource();
+            try
+            {
+                Data.load(FileName, worker);
+            }
+            catch (Exception ex)
+            {
+                Data = null;
+                MessageBox.Show(ex.Message, App.Current.FindResource("General.Error") as string);
+            }
+            return Data;
+        }
+
         private void WorkerDoWork(object sender, DoWorkEventArgs e)
         {
-            OpenDataSourceMenuItem.IsEnabled = false;
+            //disable some controls
+            this.Dispatcher.Invoke((Action)delegate ()
+            {
+                OpenDataSourceMenuItem.IsEnabled = false;
+                AnalysisMenuItem.IsEnabled = false;
+            });
+
+            //load data            
+            e.Result = LoadDataSource(e.Argument as string, Worker);
+        }
+
+        void WorkerProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            this.StatusProgressBar.Value = e.ProgressPercentage;
         }
 
         private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            //enable some controls
             OpenDataSourceMenuItem.IsEnabled = true;
+            AnalysisMenuItem.IsEnabled = true;
+
+            //reset the progress bar and status text
+            this.StatusProgressBar.Value = 0;
+            StatusText.Text = App.Current.FindResource("StatusBar.Ready") as string;
+
+            //store result
+            WordDataSource = e.Result as ChineseWordDataSource;
+            MessageBox.Show("ok");
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -152,6 +198,8 @@ namespace Chinese_Word_Analyzer
                 MessageBox.Show(App.Current.FindResource("OpenDataSource.OpenFileDialog.NotSelected") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
+
+            Worker.RunWorkerAsync(box.FileName);
         }
 
         private void ApplicationCommandsFind(object sender, ExecutedRoutedEventArgs e)
@@ -164,5 +212,6 @@ namespace Chinese_Word_Analyzer
 
         public ResourceDictionary CurrentLanguageResource { get; private set; }
         private BackgroundWorker Worker = new BackgroundWorker();
+        private ChineseWordDataSource WordDataSource;
     }
 }

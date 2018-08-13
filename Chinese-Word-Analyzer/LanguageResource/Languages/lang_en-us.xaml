@@ -13,6 +13,7 @@
 
     <sys:String x:Key="OpenDataSource.OpenFileDialog.Title">Choose Data Source...</sys:String>
     <sys:String x:Key="OpenDataSource.OpenFileDialog.NotSelected">No Files Selected</sys:String>
+    <sys:String x:Key="OpenDataSource.LoadDataSource.Error">读取数据源失败</sys:String>
 
     <sys:String x:Key="FileTypes.Txt">Plain Text Files</sys:String>
     <sys:String x:Key="FileTypes.All">All Files</sys:String>

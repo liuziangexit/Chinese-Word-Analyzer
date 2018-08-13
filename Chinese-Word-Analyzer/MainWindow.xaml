@@ -26,7 +26,7 @@
                 <MenuItem Header="{DynamicResource File.OpenDataSource}" Name="OpenDataSourceMenuItem" Command="ApplicationCommands.Open" />
             </MenuItem>
             <MenuItem Header="{DynamicResource Analysis}">
-                <MenuItem Header="{DynamicResource Analysis.Search}" Command="ApplicationCommands.Find" />
+                <MenuItem Header="{DynamicResource Analysis.Search}" Name="AnalysisMenuItem" Command="ApplicationCommands.Find" />
             </MenuItem>
             <MenuItem Header="{DynamicResource More}">
                 <MenuItem Header="{DynamicResource More.About}"/>
@@ -43,11 +43,11 @@
             </StatusBarItem>
             <Separator Style="{StaticResource  SeparatorStyle}"/>
             <StatusBarItem>
-                <ProgressBar Width="100" Height="18" Name="StatusProcessBar"/>
+                <ProgressBar Width="100" Height="18" Name="StatusProgressBar"/>
             </StatusBarItem>
             <Separator Style="{StaticResource  SeparatorStyle}"/>
             <StatusBarItem>
-                <TextBlock Text="{Binding ElementName=StatusProcessBar, Path=Value, StringFormat={}{0:0}%}"/>
+                <TextBlock Text="{Binding ElementName=StatusProgressBar, Path=Value, StringFormat={}{0:0}%}"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>
