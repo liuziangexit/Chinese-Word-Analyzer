@@ -117,7 +117,7 @@ namespace Chinese_Word_Analyzer
         {
             this.Dispatcher.Invoke((Action)delegate ()
             {
-                StatusText.Text = App.Current.FindResource("StatusBar.ParsingDataSource") as string;
+                StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.ParsingDataSource");
             });
 
             ChineseWordDataSource Data = new ChineseWordDataSource();
@@ -159,7 +159,7 @@ namespace Chinese_Word_Analyzer
 
             //reset the progress bar and status text
             this.StatusProgressBar.Value = 0;
-            StatusText.Text = App.Current.FindResource("StatusBar.Ready") as string;
+            StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Ready");
 
             //store result
             WordDataSource = e.Result as ChineseWordDataSource;
