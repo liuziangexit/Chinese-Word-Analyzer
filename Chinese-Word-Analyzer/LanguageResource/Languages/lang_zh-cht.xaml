@@ -3,14 +3,14 @@
     xmlns:local="clr-namespace:Chinese_Word_Analyzer"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="ProgramName">汉字分析工具</sys:String>
+    <sys:String x:Key="ProgramName">漢字分析工具</sys:String>
     <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
 
-    <sys:String x:Key="StatusBar.Ready">就绪...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource">解析数据源...</sys:String>
+    <sys:String x:Key="StatusBar.Ready">就緒...</sys:String>
+    <sys:String x:Key="StatusBar.ParsingDataSource">讀取數據源...</sys:String>
 
     <sys:String x:Key="File">文件</sys:String>
-    <sys:String x:Key="File.OpenDataSource">打开数据源</sys:String>
+    <sys:String x:Key="File.OpenDataSource">打開數據源</sys:String>
     <sys:String x:Key="File.Save">Save(.jpg)</sys:String>
     <sys:String x:Key="File.Copy">Copy</sys:String>
     <sys:String x:Key="File.Info">Image Info</sys:String>

@@ -7,7 +7,7 @@
     <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
 
     <sys:String x:Key="StatusBar.Ready">Ready...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource">Parsing Data Source...</sys:String>
+    <sys:String x:Key="StatusBar.ParsingDataSource">Loading Data Source...</sys:String>
 
     <sys:String x:Key="File">File</sys:String>
     <sys:String x:Key="File.OpenDataSource">Open Data Source</sys:String>
