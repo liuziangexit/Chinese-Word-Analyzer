@@ -71,7 +71,7 @@ namespace Chinese_Word_Analyzer
 
         private static Tuple<string, ResourceDictionary> GetLanguage(string LanguageResourceKey)
         {
-            return new Tuple<string, ResourceDictionary>(LanguageResourceKey, new ResourceDictionary() { Source = new Uri(App.Current.TryFindResource(LanguageResourceKey) as string, UriKind.Relative) });
+            return new Tuple<string, ResourceDictionary>(LanguageResourceKey, new ResourceDictionary() { Source = new Uri(App.Current.FindResource(LanguageResourceKey) as string, UriKind.Relative) });
         }
 
         //获得用户已设定的语言，如果用户没有指定，则使用默认语言(取决于操作系统语言)
@@ -135,18 +135,31 @@ namespace Chinese_Word_Analyzer
             RefreshLanguageMenuAndLanguageSetting(ResetLanguageResource(GetLanguage(GetSystemLanguageResourceKey())));
         }
 
-        private void OpenDataSource_Click(object sender, RoutedEventArgs e)
+        private void ApplicationCommandsOpen(object sender, ExecutedRoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog box = new Microsoft.Win32.OpenFileDialog();
 
-            box.Title = App.Current.FindResource("OpenDataSource.OpenFileDialogTitle") as string;
+            box.Title = App.Current.FindResource("OpenDataSource.OpenFileDialog.Title") as string;
             box.DefaultExt = ".txt";
             box.Filter = App.Current.FindResource("FileTypes.Txt") as string + "|*.txt|" + App.Current.FindResource("FileTypes.All") + "|*.*";
 
             box.DereferenceLinks = true;
             box.Multiselect = false;
 
-            box.ShowDialog();
+            Nullable<bool> isSelected = box.ShowDialog(this);
+            if (isSelected != true)
+            {
+                MessageBox.Show(App.Current.FindResource("OpenDataSource.OpenFileDialog.NotSelected") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+        }
+
+        private void ApplicationCommandsFind(object sender, ExecutedRoutedEventArgs e)
+        {
+            var box = new SearchBox();
+            box.Title = App.Current.FindResource("SearchBox.Title") as string;
+            box.Owner = this;
+            box.Show();
         }
 
         public ResourceDictionary CurrentLanguageResource { get; private set; }

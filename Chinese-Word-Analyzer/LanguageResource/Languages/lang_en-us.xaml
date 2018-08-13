@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:local="clr-namespace:Chinese_Word_Analyzer"
+    xmlns:local="clr-namespace:Chinese_Word_Analyzer" 
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="General.Error">Error</sys:String>
 
     <sys:String x:Key="ProgramName">Chinese Word Analyzer</sys:String>
     <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
@@ -9,20 +11,21 @@
     <sys:String x:Key="StatusBar.Ready">Ready...</sys:String>
     <sys:String x:Key="StatusBar.ParsingDataSource">Loading Data Source...</sys:String>
 
-    <sys:String x:Key="OpenDataSource.OpenFileDialogTitle">Choose Data Source...</sys:String>
+    <sys:String x:Key="OpenDataSource.OpenFileDialog.Title">Choose Data Source...</sys:String>
+    <sys:String x:Key="OpenDataSource.OpenFileDialog.NotSelected">No Files Selected</sys:String>
 
     <sys:String x:Key="FileTypes.Txt">Plain Text Files</sys:String>
     <sys:String x:Key="FileTypes.All">All Files</sys:String>
 
     <sys:String x:Key="File">File</sys:String>
     <sys:String x:Key="File.OpenDataSource">Open Data Source</sys:String>
-    <sys:String x:Key="File.Save">Save(.jpg)</sys:String>
-    <sys:String x:Key="File.Copy">Copy</sys:String>
-    <sys:String x:Key="File.Info">Image Info</sys:String>
+
+    <sys:String x:Key="Analysis">Analysis</sys:String>
+    <sys:String x:Key="Analysis.Search">Find All References</sys:String>
+
+    <sys:String x:Key="SearchBox.Title">Search</sys:String>    
 
     <sys:String x:Key="More">More</sys:String>
-    <sys:String x:Key="More.BatchConversion">Batch Conversion</sys:String>
-    <sys:String x:Key="More.OnlineSupport">Online Support</sys:String>
     <sys:String x:Key="More.About">About</sys:String>
     <sys:String x:Key="More.Language">Language</sys:String>
     <sys:String x:Key="More.Language.UseSystemLanguage">Use System Language</sys:String>

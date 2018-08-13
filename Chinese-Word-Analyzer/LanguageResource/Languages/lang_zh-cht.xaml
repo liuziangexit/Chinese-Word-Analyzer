@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:local="clr-namespace:Chinese_Word_Analyzer"
+    xmlns:local="clr-namespace:Chinese_Word_Analyzer" 
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="General.Error">錯誤</sys:String>
 
     <sys:String x:Key="ProgramName">漢字分析工具</sys:String>
     <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
@@ -9,23 +11,24 @@
     <sys:String x:Key="StatusBar.Ready">就緒...</sys:String>
     <sys:String x:Key="StatusBar.ParsingDataSource">讀取數據源...</sys:String>
 
-    <sys:String x:Key="OpenDataSource.OpenFileDialogTitle">選擇數據源...</sys:String>
+    <sys:String x:Key="OpenDataSource.OpenFileDialog.Title">選擇數據源...</sys:String>
+    <sys:String x:Key="OpenDataSource.OpenFileDialog.NotSelected">沒有選擇任何文件</sys:String>
 
     <sys:String x:Key="FileTypes.Txt">純文本文件</sys:String>
     <sys:String x:Key="FileTypes.All">所有文件</sys:String>
 
     <sys:String x:Key="File">文件</sys:String>
     <sys:String x:Key="File.OpenDataSource">打開數據源</sys:String>
-    <sys:String x:Key="File.Save">Save(.jpg)</sys:String>
-    <sys:String x:Key="File.Copy">Copy</sys:String>
-    <sys:String x:Key="File.Info">Image Info</sys:String>
-    
-    <sys:String x:Key="More">More</sys:String>
-    <sys:String x:Key="More.BatchConversion">Batch Conversion</sys:String>
-    <sys:String x:Key="More.OnlineSupport">Online Support</sys:String>
-    <sys:String x:Key="More.About">About</sys:String>
-    <sys:String x:Key="More.Language">Language</sys:String>
-    <sys:String x:Key="More.Language.UseSystemLanguage">Use System Language</sys:String>
+
+    <sys:String x:Key="Analysis">分析</sys:String>
+    <sys:String x:Key="Analysis.Search">查找所有引用</sys:String>
+
+    <sys:String x:Key="SearchBox.Title">Search</sys:String>
+
+    <sys:String x:Key="More">更多</sys:String>
+    <sys:String x:Key="More.About">關於</sys:String>
+    <sys:String x:Key="More.Language">語言</sys:String>
+    <sys:String x:Key="More.Language.UseSystemLanguage">使用系統語言</sys:String>
     <sys:String x:Key="More.About.Developer">liuziangexit.com</sys:String>
     <sys:String x:Key="More.About.People">People</sys:String>
     <sys:String x:Key="More.About.License">License</sys:String>

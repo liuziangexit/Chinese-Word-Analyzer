@@ -11,6 +11,10 @@
             <Setter Property="Background" Value="LightGray"/>
         </Style>
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Open" Executed="ApplicationCommandsOpen"/>
+        <CommandBinding Command="ApplicationCommands.Find" Executed="ApplicationCommandsFind"/>
+    </Window.CommandBindings>
     <Grid Background="LightGray">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
@@ -19,16 +23,12 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="{DynamicResource File}" Height="25">
-                <MenuItem Header="{DynamicResource File.OpenDataSource}" Name="OpenDataSourceMenuItem" Click="OpenDataSource_Click" />
-                <MenuItem Header="{DynamicResource File.Save}" />
-                <MenuItem Header="{DynamicResource File.Copy}"/>
-                <Separator Style="{StaticResource  SeparatorStyle}"/>
-                <MenuItem x:Name="FileInfoMenuItem" IsEnabled="False" Header="{DynamicResource File.Info}"/>
+                <MenuItem Header="{DynamicResource File.OpenDataSource}" Name="OpenDataSourceMenuItem" Command="ApplicationCommands.Open" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource Analysis}">
+                <MenuItem Header="{DynamicResource Analysis.Search}" Command="ApplicationCommands.Find" />
             </MenuItem>
             <MenuItem Header="{DynamicResource More}">
-                <MenuItem Header="{DynamicResource More.BatchConversion}" />
-                <Separator Style="{StaticResource  SeparatorStyle}"/>
-                <MenuItem Header="{DynamicResource More.OnlineSupport}" />
                 <MenuItem Header="{DynamicResource More.About}"/>
                 <Separator Style="{StaticResource  SeparatorStyle}"/>
                 <MenuItem Header="{DynamicResource More.Language}" Name="LanguageMenu">
