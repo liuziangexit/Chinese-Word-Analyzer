@@ -9,6 +9,11 @@
     <sys:String x:Key="StatusBar.Ready">就緒...</sys:String>
     <sys:String x:Key="StatusBar.ParsingDataSource">讀取數據源...</sys:String>
 
+    <sys:String x:Key="OpenDataSource.OpenFileDialogTitle">選擇數據源...</sys:String>
+
+    <sys:String x:Key="FileTypes.Txt">純文本文件</sys:String>
+    <sys:String x:Key="FileTypes.All">所有文件</sys:String>
+
     <sys:String x:Key="File">文件</sys:String>
     <sys:String x:Key="File.OpenDataSource">打開數據源</sys:String>
     <sys:String x:Key="File.Save">Save(.jpg)</sys:String>

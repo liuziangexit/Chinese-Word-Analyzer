@@ -19,11 +19,11 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="{DynamicResource File}" Height="25">
-                <MenuItem Header="{DynamicResource File.OpenDataSource}" />
+                <MenuItem Header="{DynamicResource File.OpenDataSource}" Name="OpenDataSourceMenuItem" Click="OpenDataSource_Click" />
                 <MenuItem Header="{DynamicResource File.Save}" />
                 <MenuItem Header="{DynamicResource File.Copy}"/>
                 <Separator Style="{StaticResource  SeparatorStyle}"/>
-                <MenuItem x:Name="FileInfo" IsEnabled="False" Header="{DynamicResource File.Info}"/>
+                <MenuItem x:Name="FileInfoMenuItem" IsEnabled="False" Header="{DynamicResource File.Info}"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource More}">
                 <MenuItem Header="{DynamicResource More.BatchConversion}" />

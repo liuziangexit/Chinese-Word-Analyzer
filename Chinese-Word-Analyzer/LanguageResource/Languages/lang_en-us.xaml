@@ -9,6 +9,11 @@
     <sys:String x:Key="StatusBar.Ready">Ready...</sys:String>
     <sys:String x:Key="StatusBar.ParsingDataSource">Loading Data Source...</sys:String>
 
+    <sys:String x:Key="OpenDataSource.OpenFileDialogTitle">Choose Data Source...</sys:String>
+
+    <sys:String x:Key="FileTypes.Txt">Plain Text Files</sys:String>
+    <sys:String x:Key="FileTypes.All">All Files</sys:String>
+
     <sys:String x:Key="File">File</sys:String>
     <sys:String x:Key="File.OpenDataSource">Open Data Source</sys:String>
     <sys:String x:Key="File.Save">Save(.jpg)</sys:String>

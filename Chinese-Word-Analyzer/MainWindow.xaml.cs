@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -20,9 +21,13 @@ namespace Chinese_Word_Analyzer
         public MainWindow()
         {
             InitializeComponent();
+
             LoadRegionCodes();
             LoadLanguagesAndBuildLanguageMenu();
             RefreshLanguageMenuAndLanguageSetting(ResetLanguageResource(GetSettedOrSystemLanguage()));
+
+            Worker.DoWork += new DoWorkEventHandler(WorkerDoWork);
+            Worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(WorkerCompleted);
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -105,6 +110,16 @@ namespace Chinese_Word_Analyzer
             Properties.Settings.Default.LanguageResourceKey = LanguageResourceKey;
         }
 
+        private void WorkerDoWork(object sender, DoWorkEventArgs e)
+        {
+            OpenDataSourceMenuItem.IsEnabled = false;
+        }
+
+        private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            OpenDataSourceMenuItem.IsEnabled = true;
+        }
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Properties.Settings.Default.Save();
@@ -120,6 +135,21 @@ namespace Chinese_Word_Analyzer
             RefreshLanguageMenuAndLanguageSetting(ResetLanguageResource(GetLanguage(GetSystemLanguageResourceKey())));
         }
 
+        private void OpenDataSource_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog box = new Microsoft.Win32.OpenFileDialog();
+
+            box.Title = App.Current.FindResource("OpenDataSource.OpenFileDialogTitle") as string;
+            box.DefaultExt = ".txt";
+            box.Filter = App.Current.FindResource("FileTypes.Txt") as string + "|*.txt|" + App.Current.FindResource("FileTypes.All") + "|*.*";
+
+            box.DereferenceLinks = true;
+            box.Multiselect = false;
+
+            box.ShowDialog();
+        }
+
         public ResourceDictionary CurrentLanguageResource { get; private set; }
+        private BackgroundWorker Worker = new BackgroundWorker();
     }
 }
