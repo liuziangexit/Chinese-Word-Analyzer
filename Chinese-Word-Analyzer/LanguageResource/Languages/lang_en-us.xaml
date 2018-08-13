@@ -5,12 +5,16 @@
 
     <sys:String x:Key="ProgramName">Chinese Word Analyzer</sys:String>
     <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
-    <sys:String x:Key="StatusBar.Ready">Ready</sys:String>
+
+    <sys:String x:Key="StatusBar.Ready">Ready...</sys:String>
+    <sys:String x:Key="StatusBar.ParsingDataSource">Parsing Data Source...</sys:String>
+
     <sys:String x:Key="File">File</sys:String>
-    <sys:String x:Key="File.Open">Open Data Source</sys:String>
+    <sys:String x:Key="File.OpenDataSource">Open Data Source</sys:String>
     <sys:String x:Key="File.Save">Save(.jpg)</sys:String>
     <sys:String x:Key="File.Copy">Copy</sys:String>
     <sys:String x:Key="File.Info">Image Info</sys:String>
+
     <sys:String x:Key="More">More</sys:String>
     <sys:String x:Key="More.BatchConversion">Batch Conversion</sys:String>
     <sys:String x:Key="More.OnlineSupport">Online Support</sys:String>

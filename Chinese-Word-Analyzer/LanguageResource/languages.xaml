@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:local="clr-namespace:Chinese_Word_Analyzer" 
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!--- 语言可读名称与对应的语言资源 -->
+    <sys:String x:Key="简体中文">LanguageResource/Languages/lang_zh-chs.xaml</sys:String>
+    <sys:String x:Key="繁體中文">LanguageResource/Languages/lang_zh-cht.xaml</sys:String>
+    <sys:String x:Key="English">LanguageResource/Languages/lang_en-us.xaml</sys:String>
+
+</ResourceDictionary>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chinese_Word_Analyzer"
         mc:Ignorable="d"
-        Title="{DynamicResource ProgramName}" Height="545" Width="740">
+        Title="{DynamicResource ProgramName}" Height="545" Width="740" MinHeight="545" MinWidth="740" ResizeMode="CanResizeWithGrip" Closing="Window_Closing">
     <Window.Resources>
         <Style x:Key="SeparatorStyle" TargetType="{x:Type Separator}">
             <Setter Property="Background" Value="LightGray"/>
@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="{DynamicResource File}" Height="25">
-                <MenuItem Header="{DynamicResource File.Open}" />
+                <MenuItem Header="{DynamicResource File.OpenDataSource}" />
                 <MenuItem Header="{DynamicResource File.Save}" />
                 <MenuItem Header="{DynamicResource File.Copy}"/>
                 <Separator Style="{StaticResource  SeparatorStyle}"/>
@@ -31,22 +31,23 @@
                 <MenuItem Header="{DynamicResource More.OnlineSupport}" />
                 <MenuItem Header="{DynamicResource More.About}"/>
                 <Separator Style="{StaticResource  SeparatorStyle}"/>
-                <MenuItem Header="{DynamicResource More.Language}">
-                    <MenuItem x:Name="enUS" Header="English" IsCheckable="True"/>
-                    <MenuItem x:Name="zhCHS" Header="简体中文" IsCheckable="True"/>
-                    <MenuItem x:Name="zhCHT" Header="繁體中文" IsCheckable="True"/>
+                <MenuItem Header="{DynamicResource More.Language}" Name="LanguageMenu">
                     <Separator Style="{StaticResource  SeparatorStyle}"/>
-                    <MenuItem Header="{DynamicResource More.Language.UseSystemLanguage}"/>
+                    <MenuItem Header="{DynamicResource More.Language.UseSystemLanguage}" Click="UseSystemLanguage_Click"/>
                 </MenuItem>
             </MenuItem>
         </Menu>
         <StatusBar Grid.Row="2">
             <StatusBarItem>
-                <TextBlock Text="{DynamicResource StatusBar.Ready}"/>
+                <TextBlock Name="StatusText" Text="{DynamicResource StatusBar.Ready}"/>
             </StatusBarItem>
             <Separator Style="{StaticResource  SeparatorStyle}"/>
             <StatusBarItem>
-                <ProgressBar Width="100" Height="18" Name="MainProcessBar"/>
+                <ProgressBar Width="100" Height="18" Name="StatusProcessBar"/>
+            </StatusBarItem>
+            <Separator Style="{StaticResource  SeparatorStyle}"/>
+            <StatusBarItem>
+                <TextBlock Text="{Binding ElementName=StatusProcessBar, Path=Value, StringFormat={}{0:0}%}"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>

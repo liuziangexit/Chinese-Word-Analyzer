@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:local="clr-namespace:Chinese_Word_Analyzer"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="ProgramName">汉字分析工具</sys:String>
+    <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
+
+    <sys:String x:Key="StatusBar.Ready">就绪...</sys:String>
+    <sys:String x:Key="StatusBar.ParsingDataSource">解析数据源...</sys:String>
+
+    <sys:String x:Key="File">文件</sys:String>
+    <sys:String x:Key="File.OpenDataSource">打开数据源</sys:String>
+    <sys:String x:Key="File.Save">Save(.jpg)</sys:String>
+    <sys:String x:Key="File.Copy">Copy</sys:String>
+    <sys:String x:Key="File.Info">Image Info</sys:String>
+    
+    <sys:String x:Key="More">More</sys:String>
+    <sys:String x:Key="More.BatchConversion">Batch Conversion</sys:String>
+    <sys:String x:Key="More.OnlineSupport">Online Support</sys:String>
+    <sys:String x:Key="More.About">About</sys:String>
+    <sys:String x:Key="More.Language">Language</sys:String>
+    <sys:String x:Key="More.Language.UseSystemLanguage">Use System Language</sys:String>
+    <sys:String x:Key="More.About.Developer">liuziangexit.com</sys:String>
+    <sys:String x:Key="More.About.People">People</sys:String>
+    <sys:String x:Key="More.About.License">License</sys:String>
+    <sys:String x:Key="More.About.PoweredBy">Powered by</sys:String>
+    <sys:String x:Key="More.About.SourceCode">Source Code</sys:String>
+    <sys:String x:Key="More.About.Contact">Contact</sys:String>
+    <sys:String x:Key="More.About.Version">WPF Remastered</sys:String>
+
+</ResourceDictionary>

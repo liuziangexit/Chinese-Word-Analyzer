@@ -3,19 +3,24 @@
     xmlns:local="clr-namespace:Chinese_Word_Analyzer"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="ProgramName">漢字分析器</sys:String>
+    <sys:String x:Key="ProgramName">汉字分析工具</sys:String>
     <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
+
+    <sys:String x:Key="StatusBar.Ready">就绪...</sys:String>
+    <sys:String x:Key="StatusBar.ParsingDataSource">解析数据源...</sys:String>
+
     <sys:String x:Key="File">文件</sys:String>
-    <sys:String x:Key="File.Open">打開(.heic)</sys:String>
-    <sys:String x:Key="File.Save">保存(.jpg)</sys:String>
-    <sys:String x:Key="File.Copy">復制</sys:String>
-    <sys:String x:Key="File.Info">Info</sys:String>
-    <sys:String x:Key="More">更多</sys:String>
-    <sys:String x:Key="More.BatchConversion">批量轉換</sys:String>
-    <sys:String x:Key="More.OnlineSupport">在線支持</sys:String>
-    <sys:String x:Key="More.About">關於</sys:String>
-    <sys:String x:Key="More.Language">語言</sys:String>
-    <sys:String x:Key="More.Language.UseSystemLanguage">使用系统语言</sys:String>
+    <sys:String x:Key="File.OpenDataSource">打开数据源</sys:String>
+    <sys:String x:Key="File.Save">Save(.jpg)</sys:String>
+    <sys:String x:Key="File.Copy">Copy</sys:String>
+    <sys:String x:Key="File.Info">Image Info</sys:String>
+    
+    <sys:String x:Key="More">More</sys:String>
+    <sys:String x:Key="More.BatchConversion">Batch Conversion</sys:String>
+    <sys:String x:Key="More.OnlineSupport">Online Support</sys:String>
+    <sys:String x:Key="More.About">About</sys:String>
+    <sys:String x:Key="More.Language">Language</sys:String>
+    <sys:String x:Key="More.Language.UseSystemLanguage">Use System Language</sys:String>
     <sys:String x:Key="More.About.Developer">liuziangexit.com</sys:String>
     <sys:String x:Key="More.About.People">People</sys:String>
     <sys:String x:Key="More.About.License">License</sys:String>
@@ -23,6 +28,5 @@
     <sys:String x:Key="More.About.SourceCode">Source Code</sys:String>
     <sys:String x:Key="More.About.Contact">Contact</sys:String>
     <sys:String x:Key="More.About.Version">WPF Remastered</sys:String>
-    <sys:String x:Key="ShowLinkTitle">无法打开浏览器，请手动复制链接</sys:String>
 
 </ResourceDictionary>
