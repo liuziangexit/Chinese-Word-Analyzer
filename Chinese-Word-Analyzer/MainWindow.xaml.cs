@@ -210,6 +210,13 @@ namespace Chinese_Word_Analyzer
             box.Show();
         }
 
+        //两个HashMap，一个是汉字对部首，一个是部首对汉字(所有包含此部首的)
+        //视图直接用表格，第一列汉字，第二列字符串
+        //Worker的参数封装成个类，里面带个枚举表示任务类型
+        //文件菜单加“数据源统计”，统计一下数据源的信息
+        //编辑菜单里面加“查看数据源”，以便移除搜索结果，重新显示所有数据
+        //部首频率分析，拿部首对汉字的hashmap来搞个value.size()排个序就好了
+
         public ResourceDictionary CurrentLanguageResource { get; private set; }
         private BackgroundWorker Worker = new BackgroundWorker();
         private ChineseWordDataSource WordDataSource;
