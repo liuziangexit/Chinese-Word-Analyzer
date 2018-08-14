@@ -37,6 +37,9 @@
     <sys:String x:Key="SearchBox.SearchByMultipleRadical">Search By Multiple Radical</sys:String>
     <sys:String x:Key="SearchBox.SearchKeyShouldBeSingleCharacter">Search Key Should Be Single Character</sys:String>
     <sys:String x:Key="SearchBox.SearchKeyShouldNotContainsWhiteSpace">Search Key Should Not Contains White Space</sys:String>
+    <sys:String x:Key="SearchBox.SearchByWordDescription">Search This Character.</sys:String>
+    <sys:String x:Key="SearchBox.SearchByRadicalDescription">Search Characters That Contain This Radical.</sys:String>
+    <sys:String x:Key="SearchBox.SearchByMultipleRadicalDescription">Search Characters That Contain All These Radicals.</sys:String>
 
     <sys:String x:Key="DataView.Header0">Chinese Character</sys:String>
     <sys:String x:Key="DataView.HeaderN">Radicals</sys:String>

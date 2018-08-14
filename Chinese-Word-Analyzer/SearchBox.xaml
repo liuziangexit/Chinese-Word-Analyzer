@@ -5,19 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chinese_Word_Analyzer"
         mc:Ignorable="d"
-        Title="{DynamicResource SearchBox.Title}" Background="LightGray" Height="250" Width="380" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Loaded="OnLoaded">
+        Title="{DynamicResource SearchBox.Title}" Background="LightGray" Height="250" Width="380" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Loaded="OnLoaded" KeyDown="OnKeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
-            <TextBox Name="SearchKey" Height="25" Margin="30,60,30,5" TextWrapping="NoWrap" AcceptsReturn="False" VerticalContentAlignment="Center"/>
-            <RadioButton GroupName="RBGroup" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30,0,0,0" Name="SearchByWordRB" Content="{DynamicResource SearchBox.SearchByWord}" IsChecked="True"/>
-            <RadioButton GroupName="RBGroup" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30,0,0,0" Name="SearchByRadicalRB" Content="{DynamicResource SearchBox.SearchByRadical}"/>
-            <RadioButton GroupName="RBGroup" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30,0,0,0" Name="SearchByMultipleRadicalRB" Content="{DynamicResource SearchBox.SearchByMultipleRadical}"/>
+            <TextBox Name="SearchKeyTextBox" Height="25" Margin="30,40,30,5" TextWrapping="NoWrap" AcceptsReturn="False" VerticalContentAlignment="Center"/>
+            <RadioButton Checked="RBChecked" GroupName="RBGroup" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30,0,0,0" Name="SearchByWordRB" Content="{DynamicResource SearchBox.SearchByWord}"/>
+            <RadioButton Checked="RBChecked" GroupName="RBGroup" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30,0,0,0" Name="SearchByRadicalRB" Content="{DynamicResource SearchBox.SearchByRadical}"/>
+            <RadioButton Checked="RBChecked" GroupName="RBGroup" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30,0,0,0" Name="SearchByMultipleRadicalRB" Content="{DynamicResource SearchBox.SearchByMultipleRadical}"/>
+            <TextBlock Name="Description" Margin="30,10,30,0" Foreground="DimGray"/>
         </StackPanel>
-        <Button Grid.Row="1" Content="{DynamicResource General.Ok}" HorizontalAlignment="Right" Width="55" Margin="0,0,4,4" Click="OkButtonClick" />
-        <Button Grid.Row="1" Content="{DynamicResource General.Cancel}" HorizontalAlignment="Left" Width="55" Margin="4,0,0,4" Click="CancelButtonClick"/>
+        <Button Grid.Row="1" Name="OkButton"  Content="{DynamicResource General.Ok}" HorizontalAlignment="Right" Width="55" Margin="0,0,4,4" Click="OkButtonClick" />
+        <Button Grid.Row="1" Name="CancelButton" Content="{DynamicResource General.Cancel}" HorizontalAlignment="Left" Width="55" Margin="4,0,0,4" Click="CancelButtonClick"/>
     </Grid>
 </Window>

@@ -19,6 +19,8 @@ namespace Chinese_Word_Analyzer
         public SearchBox()
         {
             InitializeComponent();
+            SearchByWordRB.IsChecked = true;
+            SearchKeyTextBox.Focus();
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -39,34 +41,38 @@ namespace Chinese_Word_Analyzer
 
         private void OkButtonClick(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(SearchKey.Text))
+            if (string.IsNullOrEmpty(SearchKeyTextBox.Text))
             {
                 MessageBox.Show(App.Current.FindResource("SearchBox.SearchKeyShouldNotContainsWhiteSpace") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                SearchKeyTextBox.Focus();
                 return;
             }
-            foreach (var p in SearchKey.Text)
+            foreach (var p in SearchKeyTextBox.Text)
             {
                 if (ForbiddenChars.Contains(p))
                 {
                     MessageBox.Show(App.Current.FindResource("SearchBox.SearchKeyShouldNotContainsWhiteSpace") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    SearchKeyTextBox.Focus();
                     return;
                 }
             }
 
             if (SearchByWordRB.IsChecked == true)
             {
-                if (SearchKey.Text.Length != 1)
+                if (SearchKeyTextBox.Text.Length != 1)
                 {
                     MessageBox.Show(App.Current.FindResource("SearchBox.SearchKeyShouldBeSingleCharacter") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    SearchKeyTextBox.Focus();
                     return;
                 }
                 Action = SearchBoxAction.SearchByWord;
             }
             else if (SearchByRadicalRB.IsChecked == true)
             {
-                if (SearchKey.Text.Length != 1)
+                if (SearchKeyTextBox.Text.Length != 1)
                 {
                     MessageBox.Show(App.Current.FindResource("SearchBox.SearchKeyShouldBeSingleCharacter") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    SearchKeyTextBox.Focus();
                     return;
                 }
                 Action = SearchBoxAction.SearchByRadical;
@@ -76,9 +82,39 @@ namespace Chinese_Word_Analyzer
                 Action = SearchBoxAction.SearchByMultipleRadical;
             }
 
-            SearchKeyString = SearchKey.Text;
+            SearchKeyString = SearchKeyTextBox.Text;
 
             this.Close();
+        }
+
+        private void RBChecked(object sender, RoutedEventArgs e)
+        {
+            if (sender == SearchByWordRB)
+            {
+                Description.SetResourceReference(TextBlock.TextProperty, "SearchBox.SearchByWordDescription");
+            }
+            else if (sender == SearchByRadicalRB)
+            {
+                Description.SetResourceReference(TextBlock.TextProperty, "SearchBox.SearchByRadicalDescription");
+            }
+            else if (sender == SearchByMultipleRadicalRB)
+            {
+                Description.SetResourceReference(TextBlock.TextProperty, "SearchBox.SearchByMultipleRadicalDescription");
+            }
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                OkButton.Focus();
+                OkButtonClick(OkButton, new RoutedEventArgs());
+            }
+            else if (e.Key == Key.Escape)
+            {
+                CancelButton.Focus();
+                CancelButtonClick(CancelButton, new RoutedEventArgs());
+            }
         }
 
         public enum SearchBoxAction

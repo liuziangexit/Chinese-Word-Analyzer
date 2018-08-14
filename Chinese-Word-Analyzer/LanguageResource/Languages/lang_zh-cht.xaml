@@ -37,6 +37,9 @@
     <sys:String x:Key="SearchBox.SearchByMultipleRadical">搜索多個部首</sys:String>
     <sys:String x:Key="SearchBox.SearchKeyShouldBeSingleCharacter">搜索鍵只能是單個字符</sys:String>
     <sys:String x:Key="SearchBox.SearchKeyShouldNotContainsWhiteSpace">搜索鍵不應包含不可見字符</sys:String>
+    <sys:String x:Key="SearchBox.SearchByWordDescription">查找這個漢字。</sys:String>
+    <sys:String x:Key="SearchBox.SearchByRadicalDescription">查找包含這個部首的漢字。</sys:String>
+    <sys:String x:Key="SearchBox.SearchByMultipleRadicalDescription">查找包含所有這些部首的漢字。</sys:String>
 
     <sys:String x:Key="DataView.Header0">漢字</sys:String>
     <sys:String x:Key="DataView.HeaderN">部首</sys:String>

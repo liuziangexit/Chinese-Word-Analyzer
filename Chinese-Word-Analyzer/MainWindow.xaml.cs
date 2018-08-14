@@ -204,17 +204,31 @@ namespace Chinese_Word_Analyzer
 
         private void SearchByMultipleRadical(string Radicals, Action<TextBlock> UpdateStatusRadicalCountTextFunc, Action UpdateDataViewToEmpty)
         {
-            Dictionary<char, List<string>> result = new Dictionary<char, List<string>>();
+            IEnumerable<char> IntersectedChars = null;
+
             foreach (var Radical in Radicals)
             {
-                if (Radical2Chars.ContainsKey(Radical))
+                string Chars = null;
+                if (Radical2Chars.TryGetValue(Radical, out Chars))
                 {
-                    var addMe = DoSearchByRadical(Radical, Radical2Chars);
-                    foreach (var it in addMe)
-                        if (!result.ContainsKey(it.Key))
-                            result.Add(it.Key, it.Value);
+                    if (IntersectedChars == null)
+                    {
+                        IntersectedChars = Chars.ToList();
+                        continue;
+                    }
+                    IntersectedChars = IntersectedChars.Intersect(Chars.ToList());
                 }
             }
+
+            if (IntersectedChars == null)
+            {
+                UpdateDataViewToEmpty();
+                return;
+            }
+
+            Dictionary<char, List<string>> result = new Dictionary<char, List<string>>();
+            foreach (var Char in IntersectedChars)
+                result.Add(Char, Char2Radicals[Char]);
             RefreshDataView(result, UpdateStatusRadicalCountTextFunc);
         }
 
