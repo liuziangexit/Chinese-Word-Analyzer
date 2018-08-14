@@ -408,7 +408,6 @@ namespace Chinese_Word_Analyzer
         }
 
         //TODO:
-        //按单个字搜索-ok，按单个笔画搜索，按多个笔画搜索
         //部首频率分析，拿部首对汉字的hashmap来搞个value.size()排个序就好了
 
         private ResourceDictionary CurrentLanguageResource { get; set; }//当前使用的语言字典
