@@ -45,16 +45,13 @@
     <sys:String x:Key="DataView.Header0">漢字</sys:String>
     <sys:String x:Key="DataView.HeaderN">部首</sys:String>
 
-    <sys:String x:Key="More">更多</sys:String>
-    <sys:String x:Key="More.About">關於</sys:String>
+    <sys:String x:Key="More">更多</sys:String>    
     <sys:String x:Key="More.Language">語言</sys:String>
     <sys:String x:Key="More.Language.UseSystemLanguage">使用系統語言</sys:String>
+    <sys:String x:Key="More.About">關於</sys:String>
     <sys:String x:Key="More.About.Developer">liuziangexit.com</sys:String>
-    <sys:String x:Key="More.About.People">People</sys:String>
     <sys:String x:Key="More.About.License">License</sys:String>
-    <sys:String x:Key="More.About.PoweredBy">Powered by</sys:String>
     <sys:String x:Key="More.About.SourceCode">Source Code</sys:String>
-    <sys:String x:Key="More.About.Contact">Contact</sys:String>
-    <sys:String x:Key="More.About.Version">WPF Remastered</sys:String>
+    <sys:String x:Key="More.About.Version">Release</sys:String>
 
 </ResourceDictionary>
