@@ -33,6 +33,8 @@ namespace Chinese_Word_Analyzer
             Worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(WorkerCompleted);
         }
 
+        //视图
+
         protected override void OnSourceInitialized(EventArgs e)
         {
             IconRemover.RemoveIcon(this);
@@ -78,48 +80,6 @@ namespace Chinese_Word_Analyzer
             }
         }
 
-        private void WorkerDoWork(object sender, DoWorkEventArgs e)
-        {
-            this.Dispatcher.Invoke((Action)delegate ()
-            {
-                OpenDataSourceMenuItem.IsEnabled = false;
-                SearchMenuItem.IsEnabled = false;
-            });
-
-            switch ((e.Argument as BackgroundWorkArg).Type)
-            {
-                case BackgroundWorkArg.WorkType.LoadDataSource:
-                    e.Result = new BackgroundWorkArg() { Arg = DoLoadDataSourceWork((e.Argument as BackgroundWorkArg).Arg as string, i => Worker.ReportProgress(i)) };
-                    break;
-            }
-
-            (e.Result as BackgroundWorkArg).Type = (e.Argument as BackgroundWorkArg).Type;
-        }
-
-        void WorkerProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            this.StatusProgressBar.Value = e.ProgressPercentage;
-        }
-
-        private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //enable controls
-            OpenDataSourceMenuItem.IsEnabled = true;
-            SearchMenuItem.IsEnabled = true;
-
-            //process result
-            switch ((e.Result as BackgroundWorkArg).Type)
-            {
-                case BackgroundWorkArg.WorkType.LoadDataSource:
-                    CompleteLoadDataSourceWork((e.Result as BackgroundWorkArg).Arg as Tuple<Dictionary<char, List<string>>, Dictionary<char, string>>);
-                    break;
-            }
-
-            //reset the progress bar and status text
-            this.StatusProgressBar.Value = 0;
-            StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Ready");
-        }
-
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Properties.Settings.Default.Save();
@@ -147,84 +107,140 @@ namespace Chinese_Word_Analyzer
 
         private void ClearSearchResultMenuItemClick(object sender, RoutedEventArgs e)
         {
-            if (Char2Radicals == null || Radical2Chars == null)
-                return;
-
-            StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.UpdatingView");
-
-            RefreshDataView(Char2Radicals, t => t.Text = Radical2Chars.Keys.Count.ToString());
-
-            StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Ready");
+            ClearSearchResult();
         }
 
-        //load region codes to application dictionary
-        private void LoadRegionCodes()
+        //视图-接口
+
+        private void ClearSearchResult()
         {
-            App.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("LanguageResource/regioncodes.xaml", UriKind.Relative) });
+            if (Char2Radicals != null && Radical2Chars != null)
+                RefreshDataView(Char2Radicals, t => t.Text = Radical2Chars.Keys.Count.ToString());
         }
 
-        //load language list to application dictionary and build language menu
-        private void LoadLanguagesAndBuildLanguageMenu()
+        private void RefreshDataView(Dictionary<char, List<string>> InputChar2Radicals, Action<TextBlock> UpdateStatusRadicalCountTextFunc)
         {
-            var LanguageResourceConfig = new ResourceDictionary() { Source = new Uri("LanguageResource/languages.xaml", UriKind.Relative) };
-            foreach (var key in LanguageResourceConfig.Keys)
+            //construct new ListView
+            var Grid = new GridView();
+
+            if (InputChar2Radicals.Count != 0)
             {
-                var addMe = new MenuItem();
-                addMe.Header = key;
-                addMe.Click += new RoutedEventHandler(this.LanguageControlClick);
-                LanguageMenu.Items.Insert(0, addMe);
+                //first header
+                var Header0Text = new TextBlock { Margin = new Thickness { Right = 30 } };
+                Header0Text.SetResourceReference(TextBlock.TextProperty, "DataView.Header0");
+                Grid.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = Header0Text }, DisplayMemberBinding = new Binding("Word") });
+
+                //rest of headers
+                int ColumnCountNeed = InputChar2Radicals.Values.Max(list => list.Count);
+                if (ColumnCountNeed > 0)
+                {
+                    for (int i = 0; i < ColumnCountNeed; i++)
+                    {
+                        var HeaderNText = new TextBlock { Margin = new Thickness { Right = 30 } };
+                        HeaderNText.SetResourceReference(TextBlock.TextProperty, "DataView.HeaderN");
+                        Grid.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = HeaderNText }, Width = 75, DisplayMemberBinding = new Binding("Radicals[" + i.ToString() + "]") });
+                    }
+                }
             }
-            App.Current.Resources.MergedDictionaries.Add(LanguageResourceConfig);
+
+            //assign the view
+            DataView.View = Grid;
+
+            //fill ListView with data
+            var ItemSource = new List<ChineseWordDataSource.WordDetail>(InputChar2Radicals.Count);
+            foreach (var p in InputChar2Radicals)
+                ItemSource.Add(new ChineseWordDataSource.WordDetail() { Word = p.Key, Radicals = p.Value });
+            DataView.ItemsSource = ItemSource;
+            UpdateStatusRadicalCountTextFunc(StatusRadicalCountText);
         }
 
-        private static string GetSystemLanguageResourceKey()
+        private void DisableNewBackgroundWorkEntranceThreadSafe()
         {
-            string LanguageResourceKey = App.Current.TryFindResource(System.Globalization.CultureInfo.InstalledUICulture.Name) as string;
-            if (LanguageResourceKey == null)
-                LanguageResourceKey = "Default";
-            return LanguageResourceKey;
+            this.Dispatcher.Invoke((Action)delegate ()
+            {
+                OpenDataSourceMenuItem.IsEnabled = false;
+                SearchMenuItem.IsEnabled = false;
+            });
         }
 
-        private static Tuple<string, ResourceDictionary> GetLanguage(string LanguageResourceKey)
+        private void SetStatusProgressBarValue(int Value)
         {
-            return new Tuple<string, ResourceDictionary>(LanguageResourceKey, new ResourceDictionary() { Source = new Uri(App.Current.FindResource(LanguageResourceKey) as string, UriKind.Relative) });
+            StatusProgressBar.Value = Value;
         }
 
-        //获得用户已设定的语言，如果用户没有指定，则使用默认语言(取决于操作系统语言)
-        private static Tuple<string, ResourceDictionary> GetSettedOrSystemLanguage()
+        private void SetStatusTextContent(string ResourceKey)
         {
-            string LanguageResourceKey = Properties.Settings.Default.LanguageResourceKey as string;
-            if (string.IsNullOrEmpty(LanguageResourceKey))
-                LanguageResourceKey = GetSystemLanguageResourceKey();
-            return GetLanguage(LanguageResourceKey);
+            StatusText.SetResourceReference(TextBlock.TextProperty, ResourceKey);
         }
 
-        //remove old language resource then add new language resource to application dictionary
-        //returns language's DisplayName
-        private string ResetLanguageResource(Tuple<string, ResourceDictionary> NewLanguage)
+        private void EnableNewBackgroundWorkEntrance()
         {
-            if (CurrentLanguageResource != null)
-                App.Current.Resources.MergedDictionaries.Remove(CurrentLanguageResource);
-            App.Current.Resources.MergedDictionaries.Add(NewLanguage.Item2);
-
-            CurrentLanguageResource = NewLanguage.Item2;
-            return NewLanguage.Item1;
+            OpenDataSourceMenuItem.IsEnabled = true;
+            SearchMenuItem.IsEnabled = true;
         }
+        
+        //控制器-主要功能
 
-        //设置语言菜单中当前已选的语言，并设置程序Setting
-        private void RefreshLanguageMenuAndLanguageSetting(string LanguageResourceKey)
+        private void SearchByWord(char Word)
         {
-            foreach (object p in LanguageMenu.Items)
-                if (p is MenuItem)
-                    (p as MenuItem).IsChecked = false;
-
-            foreach (object p in LanguageMenu.Items)
-                if (p is MenuItem)
-                    if ((p as MenuItem).Header.Equals(LanguageResourceKey))
-                        (p as MenuItem).IsChecked = true;
-
-            Properties.Settings.Default.LanguageResourceKey = LanguageResourceKey;
+            Action<TextBlock> SetTextBlockAsUnavailableFunc = t => t.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
+            if (!Char2Radicals.ContainsKey(Word))
+            {
+                RefreshDataView(new Dictionary<char, List<string>>(), SetTextBlockAsUnavailableFunc);
+                return;
+            }
+            RefreshDataView(new Dictionary<char, List<string>> { { Word, Char2Radicals[Word] } }, SetTextBlockAsUnavailableFunc);
         }
+
+        private void SearchByRadical(char Radical)
+        {
+            Action<TextBlock> SetTextBlockAsUnavailableFunc = t => t.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
+            if (!Radical2Chars.ContainsKey(Radical))
+            {
+                RefreshDataView(new Dictionary<char, List<string>>(), SetTextBlockAsUnavailableFunc);
+                return;
+            }
+            var Chars = Radical2Chars[Radical];
+        }
+
+        //控制器-后台线程
+
+        private void WorkerDoWork(object sender, DoWorkEventArgs e)
+        {
+            DisableNewBackgroundWorkEntranceThreadSafe();
+
+            var WorkResult = new BackgroundWorkArg { Type = (e.Argument as BackgroundWorkArg).Type };
+            switch ((e.Argument as BackgroundWorkArg).Type)
+            {
+                case BackgroundWorkArg.WorkType.LoadDataSource:
+                    WorkResult.Arg = DoLoadDataSourceWork((e.Argument as BackgroundWorkArg).Arg as string, i => Worker.ReportProgress(i));
+                    break;
+            }
+
+            e.Result = WorkResult;
+        }
+
+        private void WorkerProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            SetStatusProgressBarValue(e.ProgressPercentage);
+        }
+
+        private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            EnableNewBackgroundWorkEntrance();
+
+            switch ((e.Result as BackgroundWorkArg).Type)
+            {
+                case BackgroundWorkArg.WorkType.LoadDataSource:
+                    CompleteLoadDataSourceWork((e.Result as BackgroundWorkArg).Arg as Tuple<Dictionary<char, List<string>>, Dictionary<char, string>>);
+                    break;
+            }
+
+            SetStatusProgressBarValue(0);
+            SetStatusTextContent("StatusBar.Ready");
+        }
+
+        //数据-接口
 
         private Tuple<Dictionary<char, List<string>>, Dictionary<char, string>> DoLoadDataSourceWork(string FileName, Action<int> ReportProgress)
         {
@@ -284,76 +300,80 @@ namespace Chinese_Word_Analyzer
             Char2Radicals = result.Item1;
             Radical2Chars = result.Item2;
 
-            if (Char2Radicals != null && Radical2Chars != null)
-            {
-                StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.ParsingDataSource3");
-                RefreshDataView(Char2Radicals, t => t.Text = Radical2Chars.Keys.Count.ToString());
-            }
+            ClearSearchResult();
         }
 
-        private void RefreshDataView(Dictionary<char, List<string>> InputChar2Radicals, Action<TextBlock> UpdateStatusRadicalCountTextFunc)
+        //多语言(控制器&数据)
+
+        private void LoadRegionCodes()
         {
-            //construct new ListView
-            var Grid = new GridView();
-
-            if (InputChar2Radicals.Count != 0)
-            {
-                //first header
-                var Header0Text = new TextBlock { Margin = new Thickness { Right = 30 } };
-                Header0Text.SetResourceReference(TextBlock.TextProperty, "DataView.Header0");
-                Grid.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = Header0Text }, DisplayMemberBinding = new Binding("Word") });
-
-                //rest of headers
-                int ColumnCountNeed = InputChar2Radicals.Values.Max(list => list.Count);
-                if (ColumnCountNeed > 0)
-                {
-                    for (int i = 0; i < ColumnCountNeed; i++)
-                    {
-                        var HeaderNText = new TextBlock { Margin = new Thickness { Right = 30 } };
-                        HeaderNText.SetResourceReference(TextBlock.TextProperty, "DataView.HeaderN");
-                        Grid.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = HeaderNText }, Width = 75, DisplayMemberBinding = new Binding("Radicals[" + i.ToString() + "]") });
-                    }
-                }
-            }
-
-            //assign the view
-            DataView.View = Grid;
-
-            //fill ListView with data
-            var ItemSource = new List<ChineseWordDataSource.WordDetail>(InputChar2Radicals.Count);
-            foreach (var p in InputChar2Radicals)
-                ItemSource.Add(new ChineseWordDataSource.WordDetail() { Word = p.Key, Radicals = p.Value });
-            DataView.ItemsSource = ItemSource;
-            UpdateStatusRadicalCountTextFunc(StatusRadicalCountText);
+            App.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("LanguageResource/regioncodes.xaml", UriKind.Relative) });
         }
 
-        private void SearchByWord(char Word)
+        private void LoadLanguagesAndBuildLanguageMenu()
         {
-            Action<TextBlock> SetTextBlockAsUnavailableFunc = t => t.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
-            if (!Char2Radicals.ContainsKey(Word))
+            var LanguageResourceConfig = new ResourceDictionary() { Source = new Uri("LanguageResource/languages.xaml", UriKind.Relative) };
+            foreach (var key in LanguageResourceConfig.Keys)
             {
-                RefreshDataView(new Dictionary<char, List<string>>(), SetTextBlockAsUnavailableFunc);
-                return;
+                var addMe = new MenuItem();
+                addMe.Header = key;
+                addMe.Click += new RoutedEventHandler(this.LanguageControlClick);
+                LanguageMenu.Items.Insert(0, addMe);
             }
-            RefreshDataView(new Dictionary<char, List<string>> { { Word, Char2Radicals[Word] } }, SetTextBlockAsUnavailableFunc);
+            App.Current.Resources.MergedDictionaries.Add(LanguageResourceConfig);
         }
 
-        private void SearchByRadical(char Radical)
+        private static string GetSystemLanguageResourceKey()
         {
-            Action<TextBlock> SetTextBlockAsUnavailableFunc = t => t.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
-            if (!Radical2Chars.ContainsKey(Radical))
-            {
-                RefreshDataView(new Dictionary<char, List<string>>(), SetTextBlockAsUnavailableFunc);
-                return;
-            }
-            var Chars = Radical2Chars[Radical];
+            string LanguageResourceKey = App.Current.TryFindResource(System.Globalization.CultureInfo.InstalledUICulture.Name) as string;
+            if (LanguageResourceKey == null)
+                LanguageResourceKey = "Default";
+            return LanguageResourceKey;
         }
 
+        private static Tuple<string, ResourceDictionary> GetLanguage(string LanguageResourceKey)
+        {
+            return new Tuple<string, ResourceDictionary>(LanguageResourceKey, new ResourceDictionary() { Source = new Uri(App.Current.FindResource(LanguageResourceKey) as string, UriKind.Relative) });
+        }
+
+        private static Tuple<string, ResourceDictionary> GetSettedOrSystemLanguage()
+        {
+            string LanguageResourceKey = Properties.Settings.Default.LanguageResourceKey as string;
+            if (string.IsNullOrEmpty(LanguageResourceKey))
+                LanguageResourceKey = GetSystemLanguageResourceKey();
+            return GetLanguage(LanguageResourceKey);
+        }
+
+        private string ResetLanguageResource(Tuple<string, ResourceDictionary> NewLanguage)
+        {
+            if (CurrentLanguageResource != null)
+                App.Current.Resources.MergedDictionaries.Remove(CurrentLanguageResource);
+            App.Current.Resources.MergedDictionaries.Add(NewLanguage.Item2);
+
+            CurrentLanguageResource = NewLanguage.Item2;
+            return NewLanguage.Item1;
+        }
+
+        private void RefreshLanguageMenuAndLanguageSetting(string LanguageResourceKey)
+        {
+            foreach (object p in LanguageMenu.Items)
+                if (p is MenuItem)
+                    (p as MenuItem).IsChecked = false;
+
+            foreach (object p in LanguageMenu.Items)
+                if (p is MenuItem)
+                    if ((p as MenuItem).Header.Equals(LanguageResourceKey))
+                        (p as MenuItem).IsChecked = true;
+
+            Properties.Settings.Default.LanguageResourceKey = LanguageResourceKey;
+        }
+
+        //TODO:
         //按单个字搜索-ok，按单个笔画搜索，按多个笔画搜索
         //部首频率分析，拿部首对汉字的hashmap来搞个value.size()排个序就好了
 
-        public ResourceDictionary CurrentLanguageResource { get; private set; }
-        private BackgroundWorker Worker = new BackgroundWorker();
+        private ResourceDictionary CurrentLanguageResource { get; set; }//当前使用的语言字典
+        private BackgroundWorker Worker = new BackgroundWorker();//后台线程
 
         private Dictionary<char, List<string>> Char2Radicals;//汉字对部首
         private Dictionary<char, string> Radical2Chars;//部首对汉字

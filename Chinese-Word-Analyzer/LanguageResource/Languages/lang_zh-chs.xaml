@@ -11,12 +11,10 @@
     <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
 
     <sys:String x:Key="StatusBar.Ready">就绪...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource1">(1/3)正在读取数据源...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource2">(2/3)正在读取数据源...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource3">(3/3)正在更新视图...</sys:String>
+    <sys:String x:Key="StatusBar.ParsingDataSource1">(1/2)正在读取数据源...</sys:String>
+    <sys:String x:Key="StatusBar.ParsingDataSource2">(2/2)正在读取数据源...</sys:String>
     <sys:String x:Key="StatusBar.CharacterCount">字数</sys:String>
     <sys:String x:Key="StatusBar.RadicalCount">部首数</sys:String>
-    <sys:String x:Key="StatusBar.UpdatingView">正在更新视图...</sys:String>
     <sys:String x:Key="StatusBar.Unavailable">不可用</sys:String>
 
     <sys:String x:Key="OpenDataSource.OpenFileDialog.Title">选择数据源...</sys:String>

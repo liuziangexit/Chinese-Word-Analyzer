@@ -13,10 +13,8 @@
     <sys:String x:Key="StatusBar.Ready">就緒...</sys:String>
     <sys:String x:Key="StatusBar.ParsingDataSource1">(1/2)正在讀取數據源...</sys:String>
     <sys:String x:Key="StatusBar.ParsingDataSource2">(2/2)正在讀取數據源...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource3">(3/3)正在更新視圖...</sys:String>
     <sys:String x:Key="StatusBar.CharacterCount">字数</sys:String>
     <sys:String x:Key="StatusBar.RadicalCount">部首数</sys:String>
-    <sys:String x:Key="StatusBar.UpdatingView">正在更新視圖...</sys:String>
     <sys:String x:Key="StatusBar.Unavailable">不可用</sys:String>
 
     <sys:String x:Key="OpenDataSource.OpenFileDialog.Title">選擇數據源...</sys:String>
@@ -27,7 +25,7 @@
     <sys:String x:Key="FileTypes.All">所有文件</sys:String>
 
     <sys:String x:Key="File">文件</sys:String>
-    <sys:String x:Key="File.OpenDataSource">打開數據源</sys:String>    
+    <sys:String x:Key="File.OpenDataSource">打開數據源</sys:String>
 
     <sys:String x:Key="Analysis">分析</sys:String>
     <sys:String x:Key="Analysis.Search">查找所有引用</sys:String>
