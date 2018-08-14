@@ -72,11 +72,16 @@ namespace Chinese_Word_Analyzer
                 || string.IsNullOrWhiteSpace(box.SearchKeyString))
                 return;
 
+            if (Char2Radicals == null || Radical2Chars == null)
+                return;
+
+            Action<TextBlock> SetTextBlockAsUnavailableFunc = t => t.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
+            Action UpdateDataViewToEmpty = () => RefreshDataView(new Dictionary<char, List<string>>(), SetTextBlockAsUnavailableFunc);
             switch (box.Action)
             {
-                case SearchBox.SearchBoxAction.SearchByWord: SearchByWord(box.SearchKeyString[0]); break;
-                case SearchBox.SearchBoxAction.SearchByRadical: SearchByRadical(box.SearchKeyString[0]); break;
-                case SearchBox.SearchBoxAction.SearchByMultipleRadical:; break;
+                case SearchBox.SearchBoxAction.SearchByWord: SearchByWord(box.SearchKeyString[0], SetTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
+                case SearchBox.SearchBoxAction.SearchByRadical: SearchByRadical(box.SearchKeyString[0], SetTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
+                case SearchBox.SearchBoxAction.SearchByMultipleRadical: SearchByMultipleRadical(box.SearchKeyString, SetTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
             }
         }
 
@@ -178,29 +183,48 @@ namespace Chinese_Word_Analyzer
             OpenDataSourceMenuItem.IsEnabled = true;
             SearchMenuItem.IsEnabled = true;
         }
-        
+
         //控制器-主要功能
 
-        private void SearchByWord(char Word)
+        private void SearchByWord(char Word, Action<TextBlock> UpdateStatusRadicalCountTextFunc, Action UpdateDataViewToEmpty)
         {
-            Action<TextBlock> SetTextBlockAsUnavailableFunc = t => t.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
-            if (!Char2Radicals.ContainsKey(Word))
-            {
-                RefreshDataView(new Dictionary<char, List<string>>(), SetTextBlockAsUnavailableFunc);
-                return;
-            }
-            RefreshDataView(new Dictionary<char, List<string>> { { Word, Char2Radicals[Word] } }, SetTextBlockAsUnavailableFunc);
+            if (Char2Radicals.ContainsKey(Word))
+                RefreshDataView(new Dictionary<char, List<string>> { { Word, Char2Radicals[Word] } }, UpdateStatusRadicalCountTextFunc);
+            else
+                UpdateDataViewToEmpty();
         }
 
-        private void SearchByRadical(char Radical)
+        private void SearchByRadical(char Radical, Action<TextBlock> UpdateStatusRadicalCountTextFunc, Action UpdateDataViewToEmpty)
         {
-            Action<TextBlock> SetTextBlockAsUnavailableFunc = t => t.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
-            if (!Radical2Chars.ContainsKey(Radical))
+            if (Radical2Chars.ContainsKey(Radical))
+                RefreshDataView(DoSearchByRadical(Radical, Radical2Chars), UpdateStatusRadicalCountTextFunc);
+            else
+                UpdateDataViewToEmpty();
+        }
+
+        private void SearchByMultipleRadical(string Radicals, Action<TextBlock> UpdateStatusRadicalCountTextFunc, Action UpdateDataViewToEmpty)
+        {
+            Dictionary<char, List<string>> result = new Dictionary<char, List<string>>();
+            foreach (var Radical in Radicals)
             {
-                RefreshDataView(new Dictionary<char, List<string>>(), SetTextBlockAsUnavailableFunc);
-                return;
+                if (Radical2Chars.ContainsKey(Radical))
+                {
+                    var addMe = DoSearchByRadical(Radical, Radical2Chars);
+                    foreach (var it in addMe)
+                        if (!result.ContainsKey(it.Key))
+                            result.Add(it.Key, it.Value);
+                }
             }
-            var Chars = Radical2Chars[Radical];
+            RefreshDataView(result, UpdateStatusRadicalCountTextFunc);
+        }
+
+        private Dictionary<char, List<string>> DoSearchByRadical(char Radical, Dictionary<char, string> Source)
+        {
+            var Result = new Dictionary<char, List<string>>();
+            var Chars = Source[Radical];
+            foreach (var Character in Chars)
+                Result.Add(Character, Char2Radicals[Character]);
+            return Result;
         }
 
         //控制器-后台线程
@@ -285,7 +309,8 @@ namespace Chinese_Word_Analyzer
                     {
                         if (!R2C.ContainsKey(Ch))
                             R2C.Add(Ch, "");
-                        R2C[Ch] += kv.Key;
+                        if (!R2C[Ch].Contains(kv.Key))
+                            R2C[Ch] += kv.Key;
                     }
                 }
                 ReportProgress((int)(((double)(++ProcessedCount) / ((double)Data.WordDetails.Count * 2)) * 100));
