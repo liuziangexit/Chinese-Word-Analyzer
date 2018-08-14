@@ -44,7 +44,7 @@ namespace Chinese_Word_Analyzer
                 MessageBox.Show(App.Current.FindResource("SearchBox.SearchKeyShouldNotContainsWhiteSpace") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
-            foreach(var p in SearchKey.Text)
+            foreach (var p in SearchKey.Text)
             {
                 if (ForbiddenChars.Contains(p))
                 {
