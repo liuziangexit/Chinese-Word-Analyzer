@@ -17,6 +17,7 @@
     <sys:String x:Key="StatusBar.CharacterCount">Character Count</sys:String>
     <sys:String x:Key="StatusBar.RadicalCount">Radical Count</sys:String>
     <sys:String x:Key="StatusBar.UpdatingView">Updating View...</sys:String>
+    <sys:String x:Key="StatusBar.Unavailable">Unavailable</sys:String>
 
     <sys:String x:Key="OpenDataSource.OpenFileDialog.Title">Choose Data Source...</sys:String>
     <sys:String x:Key="OpenDataSource.OpenFileDialog.NotSelected">No Files Selected</sys:String>

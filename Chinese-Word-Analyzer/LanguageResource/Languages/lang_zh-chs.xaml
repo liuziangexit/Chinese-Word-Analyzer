@@ -17,6 +17,7 @@
     <sys:String x:Key="StatusBar.CharacterCount">字数</sys:String>
     <sys:String x:Key="StatusBar.RadicalCount">部首数</sys:String>
     <sys:String x:Key="StatusBar.UpdatingView">正在更新视图...</sys:String>
+    <sys:String x:Key="StatusBar.Unavailable">不可用</sys:String>
 
     <sys:String x:Key="OpenDataSource.OpenFileDialog.Title">选择数据源...</sys:String>
     <sys:String x:Key="OpenDataSource.OpenFileDialog.NotSelected">没有选择任何文件</sys:String>
