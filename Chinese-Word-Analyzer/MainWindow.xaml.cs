@@ -73,7 +73,7 @@ namespace Chinese_Word_Analyzer
             switch (box.Action)
             {
                 case SearchBox.SearchBoxAction.SearchByWord: SearchByWord(box.SearchKeyString[0]); break;
-                case SearchBox.SearchBoxAction.SearchByRadical:; break;
+                case SearchBox.SearchBoxAction.SearchByRadical: SearchByRadical(box.SearchKeyString[0]); break;
                 case SearchBox.SearchBoxAction.SearchByMultipleRadical:; break;
             }
         }
@@ -327,15 +327,26 @@ namespace Chinese_Word_Analyzer
             UpdateStatusRadicalCountTextFunc(StatusRadicalCountText);
         }
 
-        private void SearchByWord(char word)
+        private void SearchByWord(char Word)
         {
             Action<TextBlock> SetTextBlockAsUnavailableFunc = t => t.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
-            if (!Char2Radicals.ContainsKey(word))
+            if (!Char2Radicals.ContainsKey(Word))
             {
                 RefreshDataView(new Dictionary<char, List<string>>(), SetTextBlockAsUnavailableFunc);
                 return;
             }
-            RefreshDataView(new Dictionary<char, List<string>> { { word, Char2Radicals[word] } }, SetTextBlockAsUnavailableFunc);
+            RefreshDataView(new Dictionary<char, List<string>> { { Word, Char2Radicals[Word] } }, SetTextBlockAsUnavailableFunc);
+        }
+
+        private void SearchByRadical(char Radical)
+        {
+            Action<TextBlock> SetTextBlockAsUnavailableFunc = t => t.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
+            if (!Radical2Chars.ContainsKey(Radical))
+            {
+                RefreshDataView(new Dictionary<char, List<string>>(), SetTextBlockAsUnavailableFunc);
+                return;
+            }
+            var Chars = Radical2Chars[Radical];
         }
 
         //按单个字搜索-ok，按单个笔画搜索，按多个笔画搜索
