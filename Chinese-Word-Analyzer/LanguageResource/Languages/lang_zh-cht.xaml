@@ -4,6 +4,8 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:String x:Key="General.Error">錯誤</sys:String>
+    <sys:String x:Key="General.Ok">好</sys:String>
+    <sys:String x:Key="General.Cancel">取消</sys:String>
 
     <sys:String x:Key="ProgramName">漢字分析工具</sys:String>
     <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
@@ -14,6 +16,7 @@
     <sys:String x:Key="StatusBar.ParsingDataSource3">(3/3)正在更新視圖...</sys:String>
     <sys:String x:Key="StatusBar.CharacterCount">字数</sys:String>
     <sys:String x:Key="StatusBar.RadicalCount">部首数</sys:String>
+    <sys:String x:Key="StatusBar.UpdatingView">正在更新視圖...</sys:String>
 
     <sys:String x:Key="OpenDataSource.OpenFileDialog.Title">選擇數據源...</sys:String>
     <sys:String x:Key="OpenDataSource.OpenFileDialog.NotSelected">沒有選擇任何文件</sys:String>
@@ -27,8 +30,14 @@
 
     <sys:String x:Key="Analysis">分析</sys:String>
     <sys:String x:Key="Analysis.Search">查找所有引用</sys:String>
+    <sys:String x:Key="Analysis.ClearSearchResult">清除搜索結果</sys:String>
 
-    <sys:String x:Key="SearchBox.Title">Search</sys:String>
+    <sys:String x:Key="SearchBox.Title">查找所有引用</sys:String>
+    <sys:String x:Key="SearchBox.SearchByWord">搜索單個漢字</sys:String>
+    <sys:String x:Key="SearchBox.SearchByRadical">搜索單個部首</sys:String>
+    <sys:String x:Key="SearchBox.SearchByMultipleRadical">搜索多個部首</sys:String>
+    <sys:String x:Key="SearchBox.SearchKeyShouldBeSingleCharacter">搜索鍵只能是單個字符</sys:String>
+    <sys:String x:Key="SearchBox.SearchKeyShouldNotContainsWhiteSpace">搜索鍵不應包含不可見字符</sys:String>
 
     <sys:String x:Key="DataView.Header0">漢字</sys:String>
     <sys:String x:Key="DataView.HeaderN">部首</sys:String>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chinese_Word_Analyzer"
         mc:Ignorable="d"
-        Title="{DynamicResource ProgramName}" Height="545" Width="740" MinHeight="545" MinWidth="740" ResizeMode="CanResizeWithGrip" Closing="WindowClosing">
+        Title="{DynamicResource ProgramName}" Background="LightGray" Height="545" Width="740" MinHeight="545" MinWidth="740" ResizeMode="CanResizeWithGrip" Closing="WindowClosing" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style x:Key="SeparatorStyle" TargetType="{x:Type Separator}">
             <Setter Property="Background" Value="#C0C0C0"/>
@@ -15,7 +15,7 @@
         <CommandBinding Command="ApplicationCommands.Open" Executed="ApplicationCommandsOpen"/>
         <CommandBinding Command="ApplicationCommands.Find" Executed="ApplicationCommandsFind"/>
     </Window.CommandBindings>
-    <Grid Background="LightGray">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
@@ -26,7 +26,8 @@
                 <MenuItem Header="{DynamicResource File.OpenDataSource}" Name="OpenDataSourceMenuItem" Command="ApplicationCommands.Open" />
             </MenuItem>
             <MenuItem Header="{DynamicResource Analysis}">
-                <MenuItem Header="{DynamicResource Analysis.Search}" Name="AnalysisMenuItem" Command="ApplicationCommands.Find" />
+                <MenuItem Header="{DynamicResource Analysis.Search}" Name="SearchMenuItem" Command="ApplicationCommands.Find" />
+                <MenuItem Header="{DynamicResource Analysis.ClearSearchResult}" Name="ClearSearchResultMenuItem" Click="ClearSearchResultMenuItemClick"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource More}">
                 <MenuItem Header="{DynamicResource More.About}"/>
@@ -62,6 +63,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text=" "/>
                             <TextBlock Text="{DynamicResource StatusBar.RadicalCount}"/>
+                            <TextBlock Text=" "/>
                             <TextBlock Name="StatusRadicalCountText" Text=" 0"/>
                         </StackPanel>
                     </StatusBarItem>

@@ -4,6 +4,8 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:String x:Key="General.Error">Error</sys:String>
+    <sys:String x:Key="General.Ok">OK</sys:String>
+    <sys:String x:Key="General.Cancel">Cancel</sys:String>
 
     <sys:String x:Key="ProgramName">Chinese Word Analyzer</sys:String>
     <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
@@ -14,6 +16,7 @@
     <sys:String x:Key="StatusBar.ParsingDataSource3">(3/3)Updating View...</sys:String>
     <sys:String x:Key="StatusBar.CharacterCount">Character Count</sys:String>
     <sys:String x:Key="StatusBar.RadicalCount">Radical Count</sys:String>
+    <sys:String x:Key="StatusBar.UpdatingView">Updating View...</sys:String>
 
     <sys:String x:Key="OpenDataSource.OpenFileDialog.Title">Choose Data Source...</sys:String>
     <sys:String x:Key="OpenDataSource.OpenFileDialog.NotSelected">No Files Selected</sys:String>
@@ -24,11 +27,17 @@
 
     <sys:String x:Key="File">File</sys:String>
     <sys:String x:Key="File.OpenDataSource">Open Data Source</sys:String>
-    
+
     <sys:String x:Key="Analysis">Analysis</sys:String>
     <sys:String x:Key="Analysis.Search">Find All References</sys:String>
+    <sys:String x:Key="Analysis.ClearSearchResult">Clear Search Result</sys:String>
 
-    <sys:String x:Key="SearchBox.Title">Search</sys:String>    
+    <sys:String x:Key="SearchBox.Title">Find All References</sys:String>
+    <sys:String x:Key="SearchBox.SearchByWord">Search By Word</sys:String>
+    <sys:String x:Key="SearchBox.SearchByRadical">Search By Radical</sys:String>
+    <sys:String x:Key="SearchBox.SearchByMultipleRadical">Search By Multiple Radical</sys:String>
+    <sys:String x:Key="SearchBox.SearchKeyShouldBeSingleCharacter">Search Key Should Be Single Character</sys:String>
+    <sys:String x:Key="SearchBox.SearchKeyShouldNotContainsWhiteSpace">Search Key Should Not Contains White Space</sys:String>
 
     <sys:String x:Key="DataView.Header0">Chinese Character</sys:String>
     <sys:String x:Key="DataView.HeaderN">Radicals</sys:String>

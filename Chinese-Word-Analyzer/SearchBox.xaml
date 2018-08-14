@@ -5,9 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chinese_Word_Analyzer"
         mc:Ignorable="d"
-        Title="SearchBox" Height="250" Width="380" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        Title="{DynamicResource SearchBox.Title}" Background="LightGray" Height="250" Width="380" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Loaded="OnLoaded">
     <Grid>
-        <TextBox Name="SearchKey"/>
-        <TextBox Name="SearchWordLevel"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical">
+            <TextBox Name="SearchKey" Height="25" Margin="30,60,30,5" TextWrapping="NoWrap" AcceptsReturn="False" VerticalContentAlignment="Center"/>
+            <RadioButton GroupName="RBGroup" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30,0,0,0" Name="SearchByWordRB" Content="{DynamicResource SearchBox.SearchByWord}" IsChecked="True"/>
+            <RadioButton GroupName="RBGroup" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30,0,0,0" Name="SearchByRadicalRB" Content="{DynamicResource SearchBox.SearchByRadical}"/>
+            <RadioButton GroupName="RBGroup" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30,0,0,0" Name="SearchByMultipleRadicalRB" Content="{DynamicResource SearchBox.SearchByMultipleRadical}"/>
+        </StackPanel>
+        <Button Grid.Row="1" Content="{DynamicResource General.Ok}" HorizontalAlignment="Right" Width="55" Margin="0,0,4,4" Click="OkButtonClick" />
+        <Button Grid.Row="1" Content="{DynamicResource General.Cancel}" HorizontalAlignment="Left" Width="55" Margin="4,0,0,4" Click="CancelButtonClick"/>
     </Grid>
 </Window>

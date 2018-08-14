@@ -38,12 +38,6 @@ namespace Chinese_Word_Analyzer
             IconRemover.RemoveIcon(this);
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            IconRemover.SetWindowLong(hwnd, IconRemover.GWL_STYLE, IconRemover.GetWindowLong(hwnd, IconRemover.GWL_STYLE) & ~IconRemover.WS_SYSMENU);
-        }
-
         private void ApplicationCommandsOpen(object sender, ExecutedRoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog box = new Microsoft.Win32.OpenFileDialog();
@@ -70,7 +64,18 @@ namespace Chinese_Word_Analyzer
             var box = new SearchBox();
             box.Title = App.Current.FindResource("SearchBox.Title") as string;
             box.Owner = this;
-            box.Show();
+            box.ShowDialog();
+            if (box.Action == SearchBox.SearchBoxAction.None
+                || string.IsNullOrEmpty(box.SearchKeyString)
+                || string.IsNullOrWhiteSpace(box.SearchKeyString))
+                return;
+
+            switch (box.Action)
+            {
+                case SearchBox.SearchBoxAction.SearchByWord: SearchByWord(box.SearchKeyString[0]); break;
+                case SearchBox.SearchBoxAction.SearchByRadical:; break;
+                case SearchBox.SearchBoxAction.SearchByMultipleRadical:; break;
+            }
         }
 
         private void WorkerDoWork(object sender, DoWorkEventArgs e)
@@ -78,7 +83,7 @@ namespace Chinese_Word_Analyzer
             this.Dispatcher.Invoke((Action)delegate ()
             {
                 OpenDataSourceMenuItem.IsEnabled = false;
-                AnalysisMenuItem.IsEnabled = false;
+                SearchMenuItem.IsEnabled = false;
             });
 
             switch ((e.Argument as BackgroundWorkArg).Type)
@@ -100,7 +105,7 @@ namespace Chinese_Word_Analyzer
         {
             //enable controls
             OpenDataSourceMenuItem.IsEnabled = true;
-            AnalysisMenuItem.IsEnabled = true;
+            SearchMenuItem.IsEnabled = true;
 
             //process result
             switch ((e.Result as BackgroundWorkArg).Type)
@@ -137,7 +142,19 @@ namespace Chinese_Word_Analyzer
                 MessageBox.Show(App.Current.FindResource("File.DataSourceInfo.NoDataSource") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
-            
+
+        }
+
+        private void ClearSearchResultMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            if (Char2Radicals == null || Radical2Chars == null)
+                return;
+
+            StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.UpdatingView");
+
+            RefreshDataView(Char2Radicals, Radical2Chars);
+
+            StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Ready");
         }
 
         //load region codes to application dictionary
@@ -269,42 +286,50 @@ namespace Chinese_Word_Analyzer
 
             if (Char2Radicals != null && Radical2Chars != null)
             {
-                //update DataView                                                
                 StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.ParsingDataSource3");
-
-                //construct new ListView
-                var Grid = new GridView();
-
-                //first header
-                var Header0Text = new TextBlock { Margin = new Thickness { Right = 30 } };
-                Header0Text.SetResourceReference(TextBlock.TextProperty, "DataView.Header0");
-                Grid.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = Header0Text }, DisplayMemberBinding = new Binding("Word") });
-
-                //rest of headers
-                int ColumnCountNeed = Char2Radicals.Values.Max(list => list.Count);
-                if (ColumnCountNeed > 0)
-                {
-                    for (int i = 0; i < ColumnCountNeed; i++)
-                    {
-                        var HeaderNText = new TextBlock { Margin = new Thickness { Right = 30 } };
-                        HeaderNText.SetResourceReference(TextBlock.TextProperty, "DataView.HeaderN");
-                        Grid.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = HeaderNText }, Width = 75, DisplayMemberBinding = new Binding("Radicals[" + i.ToString() + "]") });
-                    }
-                }
-
-                //assign the view
-                DataView.View = Grid;
-
-                //fill ListView with data
-                var ItemSource = new List<ChineseWordDataSource.WordDetail>(Char2Radicals.Count);
-                foreach (var p in Char2Radicals)
-                    ItemSource.Add(new ChineseWordDataSource.WordDetail() { Word = p.Key, Radicals = p.Value });
-                DataView.ItemsSource = ItemSource;
-                StatusRadicalCountText.Text = " " + Radical2Chars.Keys.Count.ToString();
+                RefreshDataView(Char2Radicals, Radical2Chars);
             }
         }
 
-        //编辑菜单里面加“查看数据源”，以便移除搜索结果，重新显示所有数据
+        private void RefreshDataView(Dictionary<char, List<string>> InputChar2Radicals, Dictionary<char, string> InputRadical2Chars)
+        {
+            //construct new ListView
+            var Grid = new GridView();
+
+            //first header
+            var Header0Text = new TextBlock { Margin = new Thickness { Right = 30 } };
+            Header0Text.SetResourceReference(TextBlock.TextProperty, "DataView.Header0");
+            Grid.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = Header0Text }, DisplayMemberBinding = new Binding("Word") });
+
+            //rest of headers
+            int ColumnCountNeed = InputChar2Radicals.Values.Max(list => list.Count);
+            if (ColumnCountNeed > 0)
+            {
+                for (int i = 0; i < ColumnCountNeed; i++)
+                {
+                    var HeaderNText = new TextBlock { Margin = new Thickness { Right = 30 } };
+                    HeaderNText.SetResourceReference(TextBlock.TextProperty, "DataView.HeaderN");
+                    Grid.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = HeaderNText }, Width = 75, DisplayMemberBinding = new Binding("Radicals[" + i.ToString() + "]") });
+                }
+            }
+
+            //assign the view
+            DataView.View = Grid;
+
+            //fill ListView with data
+            var ItemSource = new List<ChineseWordDataSource.WordDetail>(InputChar2Radicals.Count);
+            foreach (var p in InputChar2Radicals)
+                ItemSource.Add(new ChineseWordDataSource.WordDetail() { Word = p.Key, Radicals = p.Value });
+            DataView.ItemsSource = ItemSource;
+            StatusRadicalCountText.Text = InputRadical2Chars.Keys.Count.ToString();
+        }
+
+        private void SearchByWord(char word)
+        {
+
+        }
+
+        //按单个字搜索，按单个笔画搜索，按多个笔画搜索
         //部首频率分析，拿部首对汉字的hashmap来搞个value.size()排个序就好了
 
         public ResourceDictionary CurrentLanguageResource { get; private set; }
