@@ -32,7 +32,7 @@ namespace Chinese_Word_Analyzer
                 }
                 WordDetails.Add(addMe);
                 ReportProgress((int)(((double)(++ProcessedCount) / (double)FileContent.Length) * 100));
-                System.Threading.Thread.Sleep(1);
+                //System.Threading.Thread.Sleep(1);
             }
         }
 

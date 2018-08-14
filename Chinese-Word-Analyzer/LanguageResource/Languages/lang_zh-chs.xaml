@@ -9,8 +9,10 @@
     <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
 
     <sys:String x:Key="StatusBar.Ready">就绪...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource1">(1/2)正在读取数据源...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource2">(2/2)正在读取数据源...</sys:String>
+    <sys:String x:Key="StatusBar.ParsingDataSource1">(1/3)正在读取数据源...</sys:String>
+    <sys:String x:Key="StatusBar.ParsingDataSource2">(2/3)正在读取数据源...</sys:String>
+    <sys:String x:Key="StatusBar.ParsingDataSource3">(3/3)正在更新视图...</sys:String>
+    <sys:String x:Key="StatusBar.Rows">行</sys:String>
 
     <sys:String x:Key="OpenDataSource.OpenFileDialog.Title">选择数据源...</sys:String>
     <sys:String x:Key="OpenDataSource.OpenFileDialog.NotSelected">没有选择任何文件</sys:String>
@@ -26,6 +28,9 @@
     <sys:String x:Key="Analysis.Search">查找所有引用</sys:String>
 
     <sys:String x:Key="SearchBox.Title">Search</sys:String>
+
+    <sys:String x:Key="DataView.Header0">汉字</sys:String>
+    <sys:String x:Key="DataView.HeaderN">部首</sys:String>
 
     <sys:String x:Key="More">更多</sys:String>
     <sys:String x:Key="More.About">关于</sys:String>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chinese_Word_Analyzer"
         mc:Ignorable="d"
-        Title="{DynamicResource ProgramName}" Height="545" Width="740" MinHeight="545" MinWidth="740" ResizeMode="CanResizeWithGrip" Closing="Window_Closing">
+        Title="{DynamicResource ProgramName}" Height="545" Width="740" MinHeight="545" MinWidth="740" ResizeMode="CanResizeWithGrip" Closing="WindowClosing">
     <Window.Resources>
         <Style x:Key="SeparatorStyle" TargetType="{x:Type Separator}">
             <Setter Property="Background" Value="LightGray"/>
@@ -33,10 +33,11 @@
                 <Separator Style="{StaticResource  SeparatorStyle}"/>
                 <MenuItem Header="{DynamicResource More.Language}" Name="LanguageMenu">
                     <Separator Style="{StaticResource  SeparatorStyle}"/>
-                    <MenuItem Header="{DynamicResource More.Language.UseSystemLanguage}" Click="UseSystemLanguage_Click"/>
+                    <MenuItem Header="{DynamicResource More.Language.UseSystemLanguage}" Click="UseSystemLanguageClick"/>
                 </MenuItem>
             </MenuItem>
         </Menu>
+        <ListView Grid.Row="1" Name="DataView" Background="Transparent" BorderThickness="0,1"/>
         <StatusBar Grid.Row="2">
             <StatusBarItem>
                 <TextBlock Name="StatusText" Text="{DynamicResource StatusBar.Ready}"/>
@@ -47,7 +48,14 @@
             </StatusBarItem>
             <Separator Style="{StaticResource  SeparatorStyle}"/>
             <StatusBarItem>
-                <TextBlock Text="{Binding ElementName=StatusProgressBar, Path=Value, StringFormat={}{0:0}%}"/>
+                <TextBlock Text="{Binding ElementName=StatusProgressBar, Path=Value, StringFormat={}{0}%}"/>
+            </StatusBarItem>
+            <Separator Style="{StaticResource  SeparatorStyle}"/>
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ElementName=DataView, Path=Items.Count, StringFormat='{}{0} '}"/>
+                    <TextBlock Text="{DynamicResource StatusBar.Rows}"/>
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
     </Grid>
