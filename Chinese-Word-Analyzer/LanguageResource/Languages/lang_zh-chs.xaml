@@ -9,7 +9,8 @@
     <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
 
     <sys:String x:Key="StatusBar.Ready">就绪...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource">正在读取数据源...</sys:String>
+    <sys:String x:Key="StatusBar.ParsingDataSource1">(1/2)正在读取数据源...</sys:String>
+    <sys:String x:Key="StatusBar.ParsingDataSource2">(2/2)正在读取数据源...</sys:String>
 
     <sys:String x:Key="OpenDataSource.OpenFileDialog.Title">选择数据源...</sys:String>
     <sys:String x:Key="OpenDataSource.OpenFileDialog.NotSelected">没有选择任何文件</sys:String>

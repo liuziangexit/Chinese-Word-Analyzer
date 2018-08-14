@@ -113,37 +113,78 @@ namespace Chinese_Word_Analyzer
             Properties.Settings.Default.LanguageResourceKey = LanguageResourceKey;
         }
 
-        private ChineseWordDataSource LoadDataSource(string FileName, BackgroundWorker worker)
+        private Tuple<Dictionary<char, List<string>>, Dictionary<char, string>> LoadDataSource(string FileName, BackgroundWorker worker)
         {
             this.Dispatcher.Invoke((Action)delegate ()
             {
-                StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.ParsingDataSource");
+                StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.ParsingDataSource1");
             });
 
-            ChineseWordDataSource Data = new ChineseWordDataSource();
+            var Data = new ChineseWordDataSource();
             try
             {
-                Data.load(FileName, worker);
+                Data.load(FileName, delegate (int i) { Worker.ReportProgress(i); });
             }
             catch (Exception ex)
             {
                 Data = null;
                 MessageBox.Show(ex.Message, App.Current.FindResource("General.Error") as string);
+                return new Tuple<Dictionary<char, List<string>>, Dictionary<char, string>>(null, null);
             }
-            return Data;
+
+            this.Dispatcher.Invoke((Action)delegate ()
+            {
+                StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.ParsingDataSource2");
+            });
+            worker.ReportProgress(0);
+
+            int ProcessedCount = 0;
+            var C2R = new Dictionary<char, List<string>>();
+            foreach (var p in Data.WordDetails)
+            {
+                C2R[p.Word] = p.Radicals;
+                worker.ReportProgress((int)(((double)(++ProcessedCount) / ((double)Data.WordDetails.Count * 2)) * 100));
+                System.Threading.Thread.Sleep(1);
+            }
+
+            var R2C = new Dictionary<char, string>();
+            foreach (var key in C2R.Keys)
+            {
+                var value = C2R[key];
+                foreach (var Radicals in value)
+                {
+                    foreach (var Ch in Radicals)
+                    {
+                        if (!R2C.ContainsKey(Ch))
+                            R2C.Add(Ch, "");
+                        R2C[Ch] += key;
+                    }
+                }
+                worker.ReportProgress((int)(((double)(++ProcessedCount) / ((double)Data.WordDetails.Count * 2)) * 100));
+                System.Threading.Thread.Sleep(1);
+            }
+
+            return new Tuple<Dictionary<char, List<string>>, Dictionary<char, string>>(C2R, R2C);
         }
 
         private void WorkerDoWork(object sender, DoWorkEventArgs e)
         {
-            //disable some controls
             this.Dispatcher.Invoke((Action)delegate ()
             {
                 OpenDataSourceMenuItem.IsEnabled = false;
                 AnalysisMenuItem.IsEnabled = false;
             });
 
-            //load data            
-            e.Result = LoadDataSource(e.Argument as string, Worker);
+            switch ((e.Argument as BackgroundWorkArg).Type)
+            {
+                case BackgroundWorkArg.WorkType.LoadDataSource:
+                    {
+                        e.Result = new BackgroundWorkArg() { Arg = LoadDataSource((e.Argument as BackgroundWorkArg).Arg as string, Worker) };
+                    }
+                    break;
+            }
+
+            (e.Result as BackgroundWorkArg).Type = (e.Argument as BackgroundWorkArg).Type;
         }
 
         void WorkerProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -153,7 +194,7 @@ namespace Chinese_Word_Analyzer
 
         private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //enable some controls
+            //enable controls
             OpenDataSourceMenuItem.IsEnabled = true;
             AnalysisMenuItem.IsEnabled = true;
 
@@ -162,7 +203,17 @@ namespace Chinese_Word_Analyzer
             StatusText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Ready");
 
             //store result
-            WordDataSource = e.Result as ChineseWordDataSource;
+            switch ((e.Result as BackgroundWorkArg).Type)
+            {
+                case BackgroundWorkArg.WorkType.LoadDataSource:
+                    {
+                        Tuple<Dictionary<char, List<string>>, Dictionary<char, string>> result = (e.Result as BackgroundWorkArg).Arg as Tuple<Dictionary<char, List<string>>, Dictionary<char, string>>;
+                        Char2Radicals = result.Item1;
+                        Radical2Chars = result.Item2;
+                    }
+                    break;
+            }
+
             MessageBox.Show("ok");
         }
 
@@ -199,7 +250,7 @@ namespace Chinese_Word_Analyzer
                 return;
             }
 
-            Worker.RunWorkerAsync(box.FileName);
+            Worker.RunWorkerAsync(new BackgroundWorkArg() { Arg = box.FileName, Type = BackgroundWorkArg.WorkType.LoadDataSource });
         }
 
         private void ApplicationCommandsFind(object sender, ExecutedRoutedEventArgs e)
@@ -210,15 +261,15 @@ namespace Chinese_Word_Analyzer
             box.Show();
         }
 
-        //两个HashMap，一个是汉字对部首，一个是部首对汉字(所有包含此部首的)
         //视图直接用表格，第一列汉字，第二列字符串
-        //Worker的参数封装成个类，里面带个枚举表示任务类型
         //文件菜单加“数据源统计”，统计一下数据源的信息
         //编辑菜单里面加“查看数据源”，以便移除搜索结果，重新显示所有数据
         //部首频率分析，拿部首对汉字的hashmap来搞个value.size()排个序就好了
 
         public ResourceDictionary CurrentLanguageResource { get; private set; }
         private BackgroundWorker Worker = new BackgroundWorker();
-        private ChineseWordDataSource WordDataSource;
+
+        private Dictionary<char, List<string>> Char2Radicals;//汉字对部首
+        private Dictionary<char, string> Radical2Chars;//部首对汉字
     }
 }
