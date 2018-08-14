@@ -130,6 +130,16 @@ namespace Chinese_Word_Analyzer
             RefreshLanguageMenuAndLanguageSetting(ResetLanguageResource(GetLanguage(GetSystemLanguageResourceKey())));
         }
 
+        private void DataSourceInfoMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            if (Char2Radicals == null || Radical2Chars == null)
+            {
+                MessageBox.Show(App.Current.FindResource("File.DataSourceInfo.NoDataSource") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+            
+        }
+
         //load region codes to application dictionary
         private void LoadRegionCodes()
         {
@@ -214,7 +224,7 @@ namespace Chinese_Word_Analyzer
             catch (Exception ex)
             {
                 Data = null;
-                MessageBox.Show(ex.Message, App.Current.FindResource("General.Error") as string);
+                MessageBox.Show(ex.Message, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return new Tuple<Dictionary<char, List<string>>, Dictionary<char, string>>(null, null);
             }
 
@@ -290,10 +300,10 @@ namespace Chinese_Word_Analyzer
                 foreach (var p in Char2Radicals)
                     ItemSource.Add(new ChineseWordDataSource.WordDetail() { Word = p.Key, Radicals = p.Value });
                 DataView.ItemsSource = ItemSource;
+                StatusRadicalCountText.Text = " " + Radical2Chars.Keys.Count.ToString();
             }
         }
 
-        //文件菜单加“数据源统计”，统计一下数据源的信息
         //编辑菜单里面加“查看数据源”，以便移除搜索结果，重新显示所有数据
         //部首频率分析，拿部首对汉字的hashmap来搞个value.size()排个序就好了
 

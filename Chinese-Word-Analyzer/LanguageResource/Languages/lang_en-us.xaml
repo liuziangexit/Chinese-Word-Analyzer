@@ -12,7 +12,8 @@
     <sys:String x:Key="StatusBar.ParsingDataSource1">(1/3)Loading Data Source...</sys:String>
     <sys:String x:Key="StatusBar.ParsingDataSource2">(2/3)Loading Data Source...</sys:String>
     <sys:String x:Key="StatusBar.ParsingDataSource3">(3/3)Updating View...</sys:String>
-    <sys:String x:Key="StatusBar.Rows"> Rows</sys:String>
+    <sys:String x:Key="StatusBar.CharacterCount">Character Count</sys:String>
+    <sys:String x:Key="StatusBar.RadicalCount">Radical Count</sys:String>
 
     <sys:String x:Key="OpenDataSource.OpenFileDialog.Title">Choose Data Source...</sys:String>
     <sys:String x:Key="OpenDataSource.OpenFileDialog.NotSelected">No Files Selected</sys:String>
@@ -23,7 +24,7 @@
 
     <sys:String x:Key="File">File</sys:String>
     <sys:String x:Key="File.OpenDataSource">Open Data Source</sys:String>
-
+    
     <sys:String x:Key="Analysis">Analysis</sys:String>
     <sys:String x:Key="Analysis.Search">Find All References</sys:String>
 
