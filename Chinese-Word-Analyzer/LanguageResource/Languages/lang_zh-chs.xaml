@@ -29,6 +29,7 @@
 
     <sys:String x:Key="Analysis">分析</sys:String>
     <sys:String x:Key="Analysis.Search">查找所有引用</sys:String>
+    <sys:String x:Key="Analysis.DisplayRadicalsByNumberOfReferences">根据引用数显示部首</sys:String>
     <sys:String x:Key="Analysis.ClearSearchResult">清除搜索结果</sys:String>
 
     <sys:String x:Key="SearchBox.Title">查找所有引用</sys:String>

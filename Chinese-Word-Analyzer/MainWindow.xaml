@@ -27,6 +27,8 @@
             </MenuItem>
             <MenuItem Header="{DynamicResource Analysis}">
                 <MenuItem Header="{DynamicResource Analysis.Search}" Name="SearchMenuItem" Command="ApplicationCommands.Find" />
+                <MenuItem Header="{DynamicResource Analysis.DisplayRadicalsByNumberOfReferences}" Name="DisplayRadicalsByNumberOfReferencesMenuItem" />
+                <Separator Style="{StaticResource  SeparatorStyle}"/>
                 <MenuItem Header="{DynamicResource Analysis.ClearSearchResult}" Name="ClearSearchResultMenuItem" Click="ClearSearchResultMenuItemClick"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource More}">

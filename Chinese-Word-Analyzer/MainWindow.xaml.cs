@@ -42,6 +42,9 @@ namespace Chinese_Word_Analyzer
 
         private void ApplicationCommandsOpen(object sender, ExecutedRoutedEventArgs e)
         {
+            if (!OpenDataSourceMenuItem.IsEnabled)
+                return;
+
             Microsoft.Win32.OpenFileDialog box = new Microsoft.Win32.OpenFileDialog();
 
             box.Title = App.Current.FindResource("OpenDataSource.OpenFileDialog.Title") as string;
@@ -63,6 +66,9 @@ namespace Chinese_Word_Analyzer
 
         private void ApplicationCommandsFind(object sender, ExecutedRoutedEventArgs e)
         {
+            if (!SearchMenuItem.IsEnabled)
+                return;
+
             var box = new SearchBox();
             box.Title = App.Current.FindResource("SearchBox.Title") as string;
             box.Owner = this;
@@ -165,7 +171,15 @@ namespace Chinese_Word_Analyzer
             {
                 OpenDataSourceMenuItem.IsEnabled = false;
                 SearchMenuItem.IsEnabled = false;
+                DisplayRadicalsByNumberOfReferencesMenuItem.IsEnabled = false;
             });
+        }
+
+        private void EnableNewBackgroundWorkEntrance()
+        {
+            OpenDataSourceMenuItem.IsEnabled = true;
+            SearchMenuItem.IsEnabled = true;
+            DisplayRadicalsByNumberOfReferencesMenuItem.IsEnabled = true;
         }
 
         private void SetStatusProgressBarValue(int Value)
@@ -176,12 +190,6 @@ namespace Chinese_Word_Analyzer
         private void SetStatusTextContent(string ResourceKey)
         {
             StatusText.SetResourceReference(TextBlock.TextProperty, ResourceKey);
-        }
-
-        private void EnableNewBackgroundWorkEntrance()
-        {
-            OpenDataSourceMenuItem.IsEnabled = true;
-            SearchMenuItem.IsEnabled = true;
         }
 
         //控制器-主要功能

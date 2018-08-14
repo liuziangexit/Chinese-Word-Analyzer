@@ -29,6 +29,7 @@
 
     <sys:String x:Key="Analysis">Analysis</sys:String>
     <sys:String x:Key="Analysis.Search">Find All References</sys:String>
+    <sys:String x:Key="Analysis.DisplayRadicalsByNumberOfReferences">Display Radicals By Number Of References</sys:String>
     <sys:String x:Key="Analysis.ClearSearchResult">Clear Search Result</sys:String>
 
     <sys:String x:Key="SearchBox.Title">Find All References</sys:String>
