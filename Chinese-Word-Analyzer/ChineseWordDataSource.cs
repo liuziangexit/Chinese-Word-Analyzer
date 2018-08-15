@@ -9,12 +9,12 @@ namespace Chinese_Word_Analyzer
 {
     class ChineseWordDataSource
     {
-        public void load(string FileName)
+        public void Load(string FileName)
         {
-            load(FileName, Encoding.UTF8);
+            Load(FileName, Encoding.UTF8);
         }
 
-        public void load(string FileName, Encoding encoding)
+        public void Load(string FileName, Encoding encoding)
         {
             string[] FileContent = File.ReadAllLines(FileName, encoding);
             foreach (var p in FileContent)

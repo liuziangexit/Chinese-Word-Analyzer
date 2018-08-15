@@ -40,6 +40,9 @@
 
     <sys:String x:Key="DataView.Header0">Chinese Character</sys:String>
     <sys:String x:Key="DataView.HeaderN">Radicals</sys:String>
+    <sys:String x:Key="DataView.Radicals.Header0">Radical</sys:String>
+    <sys:String x:Key="DataView.Radicals.Header1">Count</sys:String>
+    <sys:String x:Key="DataView.Radicals.Header2">Chinese Characters Containing This Radical</sys:String>
 
     <sys:String x:Key="More">More</sys:String>
     <sys:String x:Key="More.Language">Language</sys:String>

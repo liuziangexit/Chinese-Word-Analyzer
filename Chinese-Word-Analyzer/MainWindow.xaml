@@ -27,7 +27,7 @@
             </MenuItem>
             <MenuItem Header="{DynamicResource Analysis}">
                 <MenuItem Header="{DynamicResource Analysis.Search}" Name="SearchMenuItem" Command="ApplicationCommands.Find" />
-                <MenuItem Header="{DynamicResource Analysis.DisplayRadicalsByNumberOfReferences}" Name="DisplayRadicalsByNumberOfReferencesMenuItem" />
+                <MenuItem Header="{DynamicResource Analysis.DisplayRadicalsByNumberOfReferences}" Name="DisplayRadicalsByNumberOfReferencesMenuItem" Click="DisplayRadicalsByNumberOfReferencesMenuItemClick" />
                 <Separator Style="{StaticResource  SeparatorStyle}"/>
                 <MenuItem Header="{DynamicResource Analysis.ClearSearchResult}" Name="ClearSearchResultMenuItem" Click="ClearSearchResultMenuItemClick"/>
             </MenuItem>
@@ -45,7 +45,9 @@
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{DynamicResource StatusBar.CharacterCount}"/>
-                    <TextBlock Text="{Binding ElementName=DataView, Path=Items.Count, StringFormat='{} {0} '}"/>
+                    <TextBlock Text=" "/>
+                    <TextBlock Name="StatusCharCountText" Text="0"/>
+                    <TextBlock Text=" "/>
                 </StackPanel>
             </StatusBarItem>
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0,-1,0,-1" Background="#C0C0C0" />

@@ -36,6 +36,7 @@ namespace Chinese_Word_Analyzer
 
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
+            this.Action = SearchBoxAction.None;
             this.Close();
         }
 
@@ -57,29 +58,11 @@ namespace Chinese_Word_Analyzer
                 }
             }
 
-            if (SearchByWordRB.IsChecked == true)
+            if ((Action == SearchBoxAction.SearchByWord || Action == SearchBoxAction.SearchByRadical) && SearchKeyTextBox.Text.Length != 1)
             {
-                if (SearchKeyTextBox.Text.Length != 1)
-                {
-                    MessageBox.Show(App.Current.FindResource("SearchBox.SearchKeyShouldBeSingleCharacter") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    SearchKeyTextBox.Focus();
-                    return;
-                }
-                Action = SearchBoxAction.SearchByWord;
-            }
-            else if (SearchByRadicalRB.IsChecked == true)
-            {
-                if (SearchKeyTextBox.Text.Length != 1)
-                {
-                    MessageBox.Show(App.Current.FindResource("SearchBox.SearchKeyShouldBeSingleCharacter") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    SearchKeyTextBox.Focus();
-                    return;
-                }
-                Action = SearchBoxAction.SearchByRadical;
-            }
-            else if (SearchByMultipleRadicalRB.IsChecked == true)
-            {
-                Action = SearchBoxAction.SearchByMultipleRadical;
+                MessageBox.Show(App.Current.FindResource("SearchBox.SearchKeyShouldBeSingleCharacter") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                SearchKeyTextBox.Focus();
+                return;
             }
 
             SearchKeyString = SearchKeyTextBox.Text;
@@ -92,14 +75,17 @@ namespace Chinese_Word_Analyzer
             if (sender == SearchByWordRB)
             {
                 Description.SetResourceReference(TextBlock.TextProperty, "SearchBox.SearchByWordDescription");
+                Action = SearchBoxAction.SearchByWord;
             }
             else if (sender == SearchByRadicalRB)
             {
                 Description.SetResourceReference(TextBlock.TextProperty, "SearchBox.SearchByRadicalDescription");
+                Action = SearchBoxAction.SearchByRadical;
             }
             else if (sender == SearchByMultipleRadicalRB)
             {
                 Description.SetResourceReference(TextBlock.TextProperty, "SearchBox.SearchByMultipleRadicalDescription");
+                Action = SearchBoxAction.SearchByMultipleRadical;
             }
         }
 

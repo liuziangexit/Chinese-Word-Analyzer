@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -40,14 +41,15 @@ namespace Chinese_Word_Analyzer
             if (!OpenDataSourceMenuItem.IsEnabled)
                 return;
 
-            Microsoft.Win32.OpenFileDialog box = new Microsoft.Win32.OpenFileDialog();
+            Microsoft.Win32.OpenFileDialog box = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = App.Current.FindResource("OpenDataSource.OpenFileDialog.Title") as string,
+                DefaultExt = ".txt",
+                Filter = App.Current.FindResource("FileTypes.Txt") as string + "|*.txt|" + App.Current.FindResource("FileTypes.All") + "|*.*",
 
-            box.Title = App.Current.FindResource("OpenDataSource.OpenFileDialog.Title") as string;
-            box.DefaultExt = ".txt";
-            box.Filter = App.Current.FindResource("FileTypes.Txt") as string + "|*.txt|" + App.Current.FindResource("FileTypes.All") + "|*.*";
-
-            box.DereferenceLinks = true;
-            box.Multiselect = false;
+                DereferenceLinks = true,
+                Multiselect = false
+            };
 
             Nullable<bool> isSelected = box.ShowDialog(this);
             if (isSelected != true)
@@ -64,9 +66,11 @@ namespace Chinese_Word_Analyzer
             if (!SearchMenuItem.IsEnabled)
                 return;
 
-            var box = new SearchBox();
-            box.Title = App.Current.FindResource("SearchBox.Title") as string;
-            box.Owner = this;
+            var box = new SearchBox
+            {
+                Title = App.Current.FindResource("SearchBox.Title") as string,
+                Owner = this
+            };
             box.ShowDialog();
             if (box.Action == SearchBox.SearchBoxAction.None
                 || string.IsNullOrEmpty(box.SearchKeyString)
@@ -76,13 +80,15 @@ namespace Chinese_Word_Analyzer
             if (Char2Radicals == null || Radical2Chars == null)
                 return;
 
-            Action<TextBlock> SetTextBlockAsUnavailableFunc = t => t.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
-            Action UpdateDataViewToEmpty = () => RefreshDataView(new Dictionary<char, List<string>>(), SetTextBlockAsUnavailableFunc);
+            ResetStatusText();
+
+            void SetStatusRadicalCountTextBlockAsUnavailableFunc() => StatusRadicalCountText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
+            void UpdateDataViewToEmpty() => RefreshDataView(null, null, SetStatusRadicalCountTextBlockAsUnavailableFunc);
             switch (box.Action)
             {
-                case SearchBox.SearchBoxAction.SearchByWord: SearchByWord(box.SearchKeyString[0], SetTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
-                case SearchBox.SearchBoxAction.SearchByRadical: SearchByRadical(box.SearchKeyString[0], SetTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
-                case SearchBox.SearchBoxAction.SearchByMultipleRadical: SearchByMultipleRadical(box.SearchKeyString, SetTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
+                case SearchBox.SearchBoxAction.SearchByWord: SearchByWord(box.SearchKeyString[0], SetStatusRadicalCountTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
+                case SearchBox.SearchBoxAction.SearchByRadical: SearchByRadical(box.SearchKeyString[0], SetStatusRadicalCountTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
+                case SearchBox.SearchBoxAction.SearchByMultipleRadical: SearchByMultipleRadical(box.SearchKeyString, SetStatusRadicalCountTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
             }
         }
 
@@ -100,31 +106,49 @@ namespace Chinese_Word_Analyzer
         {
             RefreshLanguageMenuAndLanguageSetting(ResetLanguageResource(GetLanguage(GetSystemLanguageResourceKey())));
         }
-        
+
         private void ClearSearchResultMenuItemClick(object sender, RoutedEventArgs e)
         {
             ClearSearchResult();
         }
 
+        private void DisplayRadicalsByNumberOfReferencesMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            ResetStatusText();
+            RefreshDataViewWithRadicalsOrderByCharCount(Radical2Chars, () => StatusCharCountText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable"));
+        }
+
         //视图-接口
+
+        private void ResetStatusText()
+        {
+            StatusRadicalCountText.Text = Radical2Chars.Keys.Count.ToString();
+            StatusCharCountText.SetBinding(TextBlock.TextProperty, new Binding { ElementName = "DataView", Path = new PropertyPath("Items.Count") });
+        }
 
         private void ClearSearchResult()
         {
             if (Char2Radicals != null && Radical2Chars != null)
-                RefreshDataView(Char2Radicals, t => t.Text = Radical2Chars.Keys.Count.ToString());
+                RefreshDataViewWithChars(Char2Radicals, ResetStatusText);
         }
 
-        private void RefreshDataView(Dictionary<char, List<string>> InputChar2Radicals, Action<TextBlock> UpdateStatusRadicalCountTextFunc)
+        private void RefreshDataView(GridView View, IEnumerable ItemSource, Action UpdateInterfaceFunc)
         {
-            //construct new ListView
-            var Grid = new GridView();
+            DataView.View = View;
+            DataView.ItemsSource = ItemSource;
+            UpdateInterfaceFunc();
+        }
+
+        private void RefreshDataViewWithChars(Dictionary<char, List<string>> InputChar2Radicals, Action UpdateInterfaceFunc)
+        {
+            var View = new GridView();
 
             if (InputChar2Radicals.Count != 0)
             {
                 //first header
                 var Header0Text = new TextBlock { Margin = new Thickness { Right = 30 } };
                 Header0Text.SetResourceReference(TextBlock.TextProperty, "DataView.Header0");
-                Grid.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = Header0Text }, DisplayMemberBinding = new Binding("Word") });
+                View.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = Header0Text }, DisplayMemberBinding = new Binding("Key") });
 
                 //rest of headers
                 int ColumnCountNeed = InputChar2Radicals.Values.Max(list => list.Count);
@@ -134,48 +158,61 @@ namespace Chinese_Word_Analyzer
                     {
                         var HeaderNText = new TextBlock { Margin = new Thickness { Right = 30 } };
                         HeaderNText.SetResourceReference(TextBlock.TextProperty, "DataView.HeaderN");
-                        Grid.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = HeaderNText }, Width = 75, DisplayMemberBinding = new Binding("Radicals[" + i.ToString() + "]") });
+                        View.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = HeaderNText }, DisplayMemberBinding = new Binding("Value[" + i.ToString() + "]") });
                     }
                 }
             }
 
-            //assign the view
-            DataView.View = Grid;
-
-            //fill ListView with data
-            var ItemSource = new List<ChineseWordDataSource.WordDetail>(InputChar2Radicals.Count);
-            foreach (var p in InputChar2Radicals)
-                ItemSource.Add(new ChineseWordDataSource.WordDetail() { Word = p.Key, Radicals = p.Value });
-            DataView.ItemsSource = ItemSource;
-            UpdateStatusRadicalCountTextFunc(StatusRadicalCountText);
+            RefreshDataView(View, InputChar2Radicals.ToList(), UpdateInterfaceFunc);
         }
-        
+
+        private void RefreshDataViewWithRadicalsOrderByCharCount(Dictionary<char, string> InputRadical2Chars, Action UpdateInterfaceFunc)
+        {
+            var View = new GridView();
+
+            if (InputRadical2Chars.Count != 0)
+            {
+                var Header0Text = new TextBlock { Margin = new Thickness { Right = 30 } };
+                Header0Text.SetResourceReference(TextBlock.TextProperty, "DataView.Radicals.Header0");
+                View.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = Header0Text }, DisplayMemberBinding = new Binding("Key") });
+
+                var Header1Text = new TextBlock { Margin = new Thickness { Right = 30 } };
+                Header1Text.SetResourceReference(TextBlock.TextProperty, "DataView.Radicals.Header1");
+                View.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = Header1Text }, DisplayMemberBinding = new Binding("Value.Length") });
+
+                var Header2Text = new TextBlock { Margin = new Thickness { Right = 30 } };
+                Header2Text.SetResourceReference(TextBlock.TextProperty, "DataView.Radicals.Header2");
+                View.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = Header2Text, HorizontalContentAlignment = HorizontalAlignment.Left }, DisplayMemberBinding = new Binding("Value") });
+            }
+
+            RefreshDataView(View, InputRadical2Chars.ToList().OrderByDescending(kv => kv.Value.Length), UpdateInterfaceFunc);
+        }
+
         //控制器-主要功能
 
-        private void SearchByWord(char Word, Action<TextBlock> UpdateStatusRadicalCountTextFunc, Action UpdateDataViewToEmpty)
+        private void SearchByWord(char Word, Action UpdateStatusRadicalCountTextFunc, Action UpdateDataViewToEmpty)
         {
             if (Char2Radicals.ContainsKey(Word))
-                RefreshDataView(new Dictionary<char, List<string>> { { Word, Char2Radicals[Word] } }, UpdateStatusRadicalCountTextFunc);
+                RefreshDataViewWithChars(new Dictionary<char, List<string>> { { Word, Char2Radicals[Word] } }, UpdateStatusRadicalCountTextFunc);
             else
                 UpdateDataViewToEmpty();
         }
 
-        private void SearchByRadical(char Radical, Action<TextBlock> UpdateStatusRadicalCountTextFunc, Action UpdateDataViewToEmpty)
+        private void SearchByRadical(char Radical, Action UpdateStatusRadicalCountTextFunc, Action UpdateDataViewToEmpty)
         {
             if (Radical2Chars.ContainsKey(Radical))
-                RefreshDataView(DoSearchByRadical(Radical, Radical2Chars), UpdateStatusRadicalCountTextFunc);
+                RefreshDataViewWithChars(DoSearchByRadical(Radical, Radical2Chars), UpdateStatusRadicalCountTextFunc);
             else
                 UpdateDataViewToEmpty();
         }
 
-        private void SearchByMultipleRadical(string Radicals, Action<TextBlock> UpdateStatusRadicalCountTextFunc, Action UpdateDataViewToEmpty)
+        private void SearchByMultipleRadical(string Radicals, Action UpdateStatusRadicalCountTextFunc, Action UpdateDataViewToEmpty)
         {
             IEnumerable<char> IntersectedChars = null;
 
             foreach (var Radical in Radicals)
             {
-                string Chars = null;
-                if (Radical2Chars.TryGetValue(Radical, out Chars))
+                if (Radical2Chars.TryGetValue(Radical, out string Chars))
                 {
                     if (IntersectedChars == null)
                     {
@@ -195,7 +232,7 @@ namespace Chinese_Word_Analyzer
             Dictionary<char, List<string>> result = new Dictionary<char, List<string>>();
             foreach (var Char in IntersectedChars)
                 result.Add(Char, Char2Radicals[Char]);
-            RefreshDataView(result, UpdateStatusRadicalCountTextFunc);
+            RefreshDataViewWithChars(result, UpdateStatusRadicalCountTextFunc);
         }
 
         private Dictionary<char, List<string>> DoSearchByRadical(char Radical, Dictionary<char, string> Source)
@@ -206,7 +243,7 @@ namespace Chinese_Word_Analyzer
                 Result.Add(Character, Char2Radicals[Character]);
             return Result;
         }
-        
+
         //数据-接口
 
         private Tuple<Dictionary<char, List<string>>, Dictionary<char, string>> LoadDataSource(string FileName)
@@ -214,7 +251,7 @@ namespace Chinese_Word_Analyzer
             var Data = new ChineseWordDataSource();
             try
             {
-                Data.load(FileName);
+                Data.Load(FileName);
             }
             catch (Exception ex)
             {
@@ -222,7 +259,7 @@ namespace Chinese_Word_Analyzer
                 MessageBox.Show(ex.Message, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return new Tuple<Dictionary<char, List<string>>, Dictionary<char, string>>(null, null);
             }
-                        
+
             var C2R = new Dictionary<char, List<string>>();
             foreach (var p in Data.WordDetails)
                 C2R[p.Word] = p.Radicals;
@@ -265,8 +302,10 @@ namespace Chinese_Word_Analyzer
             var LanguageResourceConfig = new ResourceDictionary() { Source = new Uri("LanguageResource/languages.xaml", UriKind.Relative) };
             foreach (var key in LanguageResourceConfig.Keys)
             {
-                var addMe = new MenuItem();
-                addMe.Header = key;
+                var addMe = new MenuItem
+                {
+                    Header = key
+                };
                 addMe.Click += new RoutedEventHandler(this.LanguageControlClick);
                 LanguageMenu.Items.Insert(0, addMe);
             }
@@ -317,10 +356,7 @@ namespace Chinese_Word_Analyzer
 
             Properties.Settings.Default.LanguageResourceKey = LanguageResourceKey;
         }
-
-        //TODO:
-        //部首频率分析，拿部首对汉字的hashmap来搞个value.size()排个序就好了
-
+        
         private ResourceDictionary CurrentLanguageResource { get; set; }//当前使用的语言字典
 
         private Dictionary<char, List<string>> Char2Radicals;//汉字对部首
