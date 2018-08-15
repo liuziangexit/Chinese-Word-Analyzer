@@ -38,9 +38,6 @@ namespace Chinese_Word_Analyzer
 
         private void ApplicationCommandsOpen(object sender, ExecutedRoutedEventArgs e)
         {
-            if (!OpenDataSourceMenuItem.IsEnabled)
-                return;
-
             Microsoft.Win32.OpenFileDialog box = new Microsoft.Win32.OpenFileDialog
             {
                 Title = App.Current.FindResource("OpenDataSource.OpenFileDialog.Title") as string,
@@ -63,9 +60,6 @@ namespace Chinese_Word_Analyzer
 
         private void ApplicationCommandsFind(object sender, ExecutedRoutedEventArgs e)
         {
-            if (!SearchMenuItem.IsEnabled)
-                return;
-
             var box = new SearchBox
             {
                 Title = App.Current.FindResource("SearchBox.Title") as string,
@@ -114,6 +108,8 @@ namespace Chinese_Word_Analyzer
 
         private void DisplayRadicalsByNumberOfReferencesMenuItemClick(object sender, RoutedEventArgs e)
         {
+            if (Char2Radicals == null || Radical2Chars == null)
+                return;
             ResetStatusText();
             RefreshDataViewWithRadicalsOrderByCharCount(Radical2Chars, () => StatusCharCountText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable"));
         }
@@ -362,7 +358,7 @@ namespace Chinese_Word_Analyzer
 
             Properties.Settings.Default.LanguageResourceKey = LanguageResourceKey;
         }
-        
+
         private ResourceDictionary CurrentLanguageResource { get; set; }//当前使用的语言字典
 
         private Dictionary<char, List<string>> Char2Radicals;//汉字对部首
