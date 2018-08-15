@@ -118,6 +118,12 @@ namespace Chinese_Word_Analyzer
             RefreshDataViewWithRadicalsOrderByCharCount(Radical2Chars, () => StatusCharCountText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable"));
         }
 
+        private void AboutMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            var box = new About() { Owner = this };
+            box.ShowDialog();
+        }
+
         //视图-接口
 
         private void ResetStatusText()

@@ -32,7 +32,7 @@
                 <MenuItem Header="{DynamicResource Analysis.ClearSearchResult}" Name="ClearSearchResultMenuItem" Click="ClearSearchResultMenuItemClick"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource More}">
-                <MenuItem Header="{DynamicResource More.About}"/>
+                <MenuItem Header="{DynamicResource More.About}" Click="AboutMenuItemClick"/>
                 <Separator Style="{StaticResource  SeparatorStyle}"/>
                 <MenuItem Header="{DynamicResource More.Language}" Name="LanguageMenu">
                     <Separator Style="{StaticResource  SeparatorStyle}"/>
