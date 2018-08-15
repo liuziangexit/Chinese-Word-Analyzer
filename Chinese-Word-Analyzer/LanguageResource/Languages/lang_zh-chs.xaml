@@ -49,8 +49,7 @@
     <sys:String x:Key="More.Language.UseSystemLanguage">使用系统语言</sys:String>
     <sys:String x:Key="More.About">关于</sys:String>
     <sys:String x:Key="More.About.Developer">liuziangexit.com</sys:String>
-    <sys:String x:Key="More.About.License">许可证</sys:String>
-    <sys:String x:Key="More.About.SourceCode">源代码</sys:String>
+    <sys:String x:Key="More.About.SourceAndLicense">源代码和许可证</sys:String>
     <sys:String x:Key="More.About.Version">Release</sys:String>
     <sys:String x:Key="More.About.Date">20180815</sys:String>
 

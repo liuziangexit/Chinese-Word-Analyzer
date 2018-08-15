@@ -27,5 +27,21 @@ namespace Chinese_Word_Analyzer
         {
             IconRemover.RemoveIcon(this);
         }
+
+        private void SourceAndLicensePreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("https://github.com/liuziangexit/Chinese-Word-Analyzer");
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start("IExplore.exe", "https://github.com/liuziangexit/Chinese-Word-Analyzer");
+                }
+                catch (Exception) { }
+            }
+        }
     }
 }

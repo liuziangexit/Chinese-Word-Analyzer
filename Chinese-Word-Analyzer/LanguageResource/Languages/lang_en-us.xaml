@@ -49,8 +49,7 @@
     <sys:String x:Key="More.Language.UseSystemLanguage">Use System Language</sys:String>
     <sys:String x:Key="More.About">About</sys:String>
     <sys:String x:Key="More.About.Developer">liuziangexit.com</sys:String>
-    <sys:String x:Key="More.About.License">License</sys:String>
-    <sys:String x:Key="More.About.SourceCode">Source Code</sys:String>
+    <sys:String x:Key="More.About.SourceAndLicense">Source And License</sys:String>
     <sys:String x:Key="More.About.Version">Release</sys:String>
     <sys:String x:Key="More.About.Date">20180815</sys:String>
 

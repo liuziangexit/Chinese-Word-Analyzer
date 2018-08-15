@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Chinese_Word_Analyzer"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
-        Title="{DynamicResource More.About}" Height="175" Width="318" ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True">
+        Title="{DynamicResource More.About}" Height="175" Width="318" ResizeMode="NoResize" ShowInTaskbar="False" >
     <Grid Background="#F0F0F0">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -23,10 +23,8 @@
             <Grid VerticalAlignment="Bottom" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{DynamicResource More.About.License}" Foreground="DimGray" FontSize="12" HorizontalAlignment="Left" Margin="6,0,0,0" Grid.Row="0"/>
-                <TextBlock Text="{DynamicResource More.About.SourceCode}" Foreground="DimGray" FontSize="12" HorizontalAlignment="Left" Margin="6,0,0,4" Grid.Row="1"/>
+                <TextBlock Text="{DynamicResource More.About.SourceAndLicense}" Foreground="DimGray" FontSize="12" HorizontalAlignment="Left" Margin="6,0,0,4" Grid.Row="0" PreviewMouseDown="SourceAndLicensePreviewMouseDown" Cursor="Hand"/>
             </Grid>
             <Grid VerticalAlignment="Bottom" Grid.Column="1">
                 <Grid.RowDefinitions>
