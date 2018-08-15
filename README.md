@@ -26,6 +26,11 @@
 <h2>版权警告</h2>
 此软件源代码和二进制文件使用 GPLv3 和 liuziangexit Additional License 2017 进行许可，但其使用的数据(DataSource 文件夹下)具有其他版权限制。<br>
 您必须阅读并遵守 DataSource 文件夹中的 LICENSE 文件所列条款，才可以使用该文件夹中的数据源。
+<h2>下载</h2>
+https://github.com/liuziangexit/Chinese-Word-Analyzer/releases<br>
+https://pan.baidu.com/s/18i8MZDc8VEbB5kDtb_oSKw<br>
+https://liuziangexit.com/resource/Chinese-Word-Analyzer.rar<br>
+https://sr2.liuziangexit.com/resource/Chinese-Word-Analyzer.rar
 <h2>数据源来自</h2>
 <h4>漢語拆字字典 - https://github.com/kfcd/chaizi</h4>
 <h4>开放词典 - http://www.kaifangcidian.com/</h4>
