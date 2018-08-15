@@ -43,32 +43,18 @@
         <ListView Grid.Row="1" Name="DataView" Background="Transparent" BorderThickness="0,1"/>
         <StatusBar Grid.Row="2">
             <StatusBarItem>
-                <TextBlock Name="StatusText" Text="{DynamicResource StatusBar.Ready}"/>
-            </StatusBarItem>
-            <Separator Style="{StaticResource  SeparatorStyle}"/>
-            <StatusBarItem>
-                <ProgressBar Width="100" Height="18" Name="StatusProgressBar"/>
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock Text="{Binding ElementName=StatusProgressBar, Path=Value, StringFormat={}{0}%}"/>
-            </StatusBarItem>
-            <StatusBarItem HorizontalAlignment="Right" Margin="0,0,20,0">
                 <StackPanel Orientation="Horizontal">
-                    <StatusBarItem>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{DynamicResource StatusBar.CharacterCount}"/>
-                            <TextBlock Text="{Binding ElementName=DataView, Path=Items.Count, StringFormat='{} {0} '}"/>
-                        </StackPanel>
-                    </StatusBarItem>
-                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0,-1,0,-1" Background="#C0C0C0" />
-                    <StatusBarItem>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text=" "/>
-                            <TextBlock Text="{DynamicResource StatusBar.RadicalCount}"/>
-                            <TextBlock Text=" "/>
-                            <TextBlock Name="StatusRadicalCountText" Text=" 0"/>
-                        </StackPanel>
-                    </StatusBarItem>
+                    <TextBlock Text="{DynamicResource StatusBar.CharacterCount}"/>
+                    <TextBlock Text="{Binding ElementName=DataView, Path=Items.Count, StringFormat='{} {0} '}"/>
+                </StackPanel>
+            </StatusBarItem>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0,-1,0,-1" Background="#C0C0C0" />
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text=" "/>
+                    <TextBlock Text="{DynamicResource StatusBar.RadicalCount}"/>
+                    <TextBlock Text=" "/>
+                    <TextBlock Name="StatusRadicalCountText" Text=" 0"/>
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>

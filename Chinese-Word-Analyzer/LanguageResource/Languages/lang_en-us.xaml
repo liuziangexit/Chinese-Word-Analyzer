@@ -8,11 +8,7 @@
     <sys:String x:Key="General.Cancel">Cancel</sys:String>
 
     <sys:String x:Key="ProgramName">Chinese Word Analyzer</sys:String>
-    <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
 
-    <sys:String x:Key="StatusBar.Ready">Ready...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource1">(1/2)Loading Data Source...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource2">(2/2)Loading Data Source...</sys:String>
     <sys:String x:Key="StatusBar.CharacterCount">Character Count</sys:String>
     <sys:String x:Key="StatusBar.RadicalCount">Radical Count</sys:String>
     <sys:String x:Key="StatusBar.Unavailable">Unavailable</sys:String>

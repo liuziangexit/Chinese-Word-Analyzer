@@ -9,15 +9,14 @@ namespace Chinese_Word_Analyzer
 {
     class ChineseWordDataSource
     {
-        public void load(string FileName, Action<int> ReportProgress)
+        public void load(string FileName)
         {
-            load(FileName, ReportProgress, Encoding.UTF8);
+            load(FileName, Encoding.UTF8);
         }
 
-        public void load(string FileName, Action<int> ReportProgress, Encoding encoding)
+        public void load(string FileName, Encoding encoding)
         {
             string[] FileContent = File.ReadAllLines(FileName, encoding);
-            int ProcessedCount = 0;
             foreach (var p in FileContent)
             {
                 string[] cols = p.Split('\t');
@@ -31,8 +30,6 @@ namespace Chinese_Word_Analyzer
                         addMe.Radicals[addMe.Radicals.Count - 1] += p2;
                 }
                 WordDetails.Add(addMe);
-                ReportProgress((int)(((double)(++ProcessedCount) / (double)FileContent.Length) * 100));
-                //System.Threading.Thread.Sleep(1);
             }
         }
 

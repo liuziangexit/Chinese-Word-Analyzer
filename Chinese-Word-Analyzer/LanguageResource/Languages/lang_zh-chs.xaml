@@ -8,11 +8,7 @@
     <sys:String x:Key="General.Cancel">取消</sys:String>
 
     <sys:String x:Key="ProgramName">汉字分析工具</sys:String>
-    <sys:String x:Key="ProgramNameEnglish">Chinese Word Analyzer</sys:String>
 
-    <sys:String x:Key="StatusBar.Ready">就绪...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource1">(1/2)正在读取数据源...</sys:String>
-    <sys:String x:Key="StatusBar.ParsingDataSource2">(2/2)正在读取数据源...</sys:String>
     <sys:String x:Key="StatusBar.CharacterCount">字数</sys:String>
     <sys:String x:Key="StatusBar.RadicalCount">部首数</sys:String>
     <sys:String x:Key="StatusBar.Unavailable">不可用</sys:String>
