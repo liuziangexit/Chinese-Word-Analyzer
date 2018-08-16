@@ -106,7 +106,16 @@ namespace Chinese_Word_Analyzer
             ResetStatusText();
 
             void SetStatusRadicalCountTextBlockAsUnavailableFunc() => StatusRadicalCountText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
-            void UpdateDataViewToEmpty() => RefreshDataView(null, new List<string> { FindResource("DataView.NoResult") as string }, SetStatusRadicalCountTextBlockAsUnavailableFunc);
+            void UpdateDataViewToEmpty()
+            {
+                var NoResultTextBlock = new TextBlock();
+                NoResultTextBlock.SetResourceReference(TextBlock.TextProperty, "DataView.NoResult");
+                RefreshDataView(null, new List<ListViewItem> { new ListViewItem { Content = NoResultTextBlock, HorizontalAlignment = HorizontalAlignment.Center } },
+                    ()=> {
+                        SetStatusRadicalCountTextBlockAsUnavailableFunc();
+                        StatusCharCountText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
+                    });
+            }
             switch (box.Action)
             {
                 case SearchBox.SearchBoxAction.SearchByWord: SearchByWord(box.SearchKeyString[0], SetStatusRadicalCountTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
@@ -159,7 +168,7 @@ namespace Chinese_Word_Analyzer
         }
 
         //视图-接口
-
+        
         private void ResetStatusText()
         {
             StatusRadicalCountText.Text = Radical2Chars.Keys.Count.ToString();
@@ -265,6 +274,11 @@ namespace Chinese_Word_Analyzer
                         continue;
                     }
                     IntersectedChars = IntersectedChars.Intersect(Chars.ToList());
+                }
+                else
+                {
+                    IntersectedChars = null;
+                    break;
                 }
             }
 

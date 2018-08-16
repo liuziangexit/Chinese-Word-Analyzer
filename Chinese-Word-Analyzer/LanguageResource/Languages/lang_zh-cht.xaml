@@ -52,7 +52,7 @@
     <sys:String x:Key="DataView.Radicals.Header0">部首</sys:String>
     <sys:String x:Key="DataView.Radicals.Header1">次數</sys:String>
     <sys:String x:Key="DataView.Radicals.Header2">引用此部首的漢字</sys:String>
-    <sys:String x:Key="DataView.NoResult">No Result</sys:String>
+    <sys:String x:Key="DataView.NoResult">無結果</sys:String>
 
     <sys:String x:Key="More">更多</sys:String>
     <sys:String x:Key="More.Language">語言</sys:String>
