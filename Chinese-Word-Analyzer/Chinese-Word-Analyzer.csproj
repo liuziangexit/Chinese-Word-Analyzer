@@ -56,12 +56,19 @@
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChineseWordDataSource.cs" />
+    <Compile Include="ExportDataViewBox.xaml.cs">
+      <DependentUpon>ExportDataViewBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IsEnabledConverter.cs" />
     <Compile Include="SearchBox.xaml.cs">
       <DependentUpon>SearchBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
     <Page Include="About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExportDataViewBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

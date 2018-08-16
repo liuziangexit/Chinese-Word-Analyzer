@@ -26,7 +26,7 @@
         <Menu>
             <MenuItem Header="{DynamicResource File}" Height="25">
                 <MenuItem Header="{DynamicResource File.OpenDataSource}" Name="OpenDataSourceMenuItem" Command="ApplicationCommands.Open" />
-                <MenuItem Header="{DynamicResource File.SaveDataView}" Name="SaveDataViewMenuItem" Command="ApplicationCommands.Save" IsEnabled="{Binding ElementName=DataView, Path=Items.Count,Converter={StaticResource IsEnabledConverter} }"  />
+                <MenuItem Header="{DynamicResource File.ExportDataView}" Name="ExportDataViewMenuItem" Command="ApplicationCommands.Save" IsEnabled="{Binding ElementName=DataView, Path=Items.Count,Converter={StaticResource IsEnabledConverter} }"  />
                 <Separator Style="{StaticResource  SeparatorStyle}"/>
                 <MenuItem Header="{DynamicResource File.ClearDataView}" Name="ClearDataViewMenuItem" Click="ClearDataViewMenuItemClick" IsEnabled="{Binding ElementName=DataView, Path=Items.Count,Converter={StaticResource IsEnabledConverter} }"  />
             </MenuItem>

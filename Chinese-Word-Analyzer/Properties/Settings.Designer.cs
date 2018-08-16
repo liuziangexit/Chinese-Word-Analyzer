@@ -34,5 +34,65 @@ namespace Chinese_Word_Analyzer.Properties {
                 this["LanguageResourceKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SearchBoxKey {
+            get {
+                return ((string)(this["SearchBoxKey"]));
+            }
+            set {
+                this["SearchBoxKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SearchBoxType {
+            get {
+                return ((int)(this["SearchBoxType"]));
+            }
+            set {
+                this["SearchBoxType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ExportDataViewBoxSeparateRowsBy {
+            get {
+                return ((string)(this["ExportDataViewBoxSeparateRowsBy"]));
+            }
+            set {
+                this["ExportDataViewBoxSeparateRowsBy"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ExportDataViewBoxSeparateColumnsBy {
+            get {
+                return ((string)(this["ExportDataViewBoxSeparateColumnsBy"]));
+            }
+            set {
+                this["ExportDataViewBoxSeparateColumnsBy"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ExportDataViewBoxWithHeader {
+            get {
+                return ((bool)(this["ExportDataViewBoxWithHeader"]));
+            }
+            set {
+                this["ExportDataViewBoxWithHeader"] = value;
+            }
+        }
     }
 }

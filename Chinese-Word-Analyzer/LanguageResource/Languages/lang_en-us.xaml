@@ -22,8 +22,8 @@
 
     <sys:String x:Key="File">File</sys:String>
     <sys:String x:Key="File.OpenDataSource">Open Data Source</sys:String>
-    <sys:String x:Key="File.SaveDataView">Save Data View</sys:String>
-    <sys:String x:Key="File.ClearDataView">Clear Data View</sys:String>    
+    <sys:String x:Key="File.ExportDataView">Export Data View</sys:String>
+    <sys:String x:Key="File.ClearDataView">Clear Data View</sys:String>
 
     <sys:String x:Key="Analysis">Analysis</sys:String>
     <sys:String x:Key="Analysis.Search">Find All References</sys:String>
@@ -40,11 +40,19 @@
     <sys:String x:Key="SearchBox.SearchByRadicalDescription">Search Characters That Contain This Radical.</sys:String>
     <sys:String x:Key="SearchBox.SearchByMultipleRadicalDescription">Search Characters That Contain All These Radicals.</sys:String>
 
+    <sys:String x:Key="ExportDataView.Title">Export Data View</sys:String>
+    <sys:String x:Key="ExportDataView.Description">Export The Currently Displayed Data View To File.</sys:String>
+    <sys:String x:Key="ExportDataView.SaveFileDialog.Title">Export To...</sys:String>
+    <sys:String x:Key="ExportDataView.SeparateRowsBy">Separate Rows By</sys:String>
+    <sys:String x:Key="ExportDataView.SeparateColumnsBy">Separate Columns By</sys:String>
+    <sys:String x:Key="ExportDataView.WithHeader">With Header</sys:String>
+
     <sys:String x:Key="DataView.Header0">Chinese Character</sys:String>
-    <sys:String x:Key="DataView.HeaderN">Radicals</sys:String>
+    <sys:String x:Key="DataView.HeaderN">Composition</sys:String>
     <sys:String x:Key="DataView.Radicals.Header0">Radical</sys:String>
     <sys:String x:Key="DataView.Radicals.Header1">Count</sys:String>
     <sys:String x:Key="DataView.Radicals.Header2">Chinese Characters Containing This Radical</sys:String>
+    <sys:String x:Key="DataView.NoResult">No Result</sys:String>
 
     <sys:String x:Key="More">More</sys:String>
     <sys:String x:Key="More.Language">Language</sys:String>

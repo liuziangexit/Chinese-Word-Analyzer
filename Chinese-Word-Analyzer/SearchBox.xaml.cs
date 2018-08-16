@@ -19,7 +19,16 @@ namespace Chinese_Word_Analyzer
         public SearchBox()
         {
             InitializeComponent();
-            SearchByWordRB.IsChecked = true;
+
+            SearchKeyTextBox.Text = Properties.Settings.Default.SearchBoxKey;
+
+            switch (Properties.Settings.Default.SearchBoxType)
+            {
+                case 2: SearchByRadicalRB.IsChecked = true; break;
+                case 3: SearchByMultipleRadicalRB.IsChecked = true; break;
+                default: SearchByWordRB.IsChecked = true; break;
+            }
+
             SearchKeyTextBox.Focus();
         }
 
@@ -33,10 +42,25 @@ namespace Chinese_Word_Analyzer
             var hwnd = new WindowInteropHelper(this).Handle;
             IconRemover.SetWindowLong(hwnd, IconRemover.GWL_STYLE, IconRemover.GetWindowLong(hwnd, IconRemover.GWL_STYLE) & ~IconRemover.WS_SYSMENU);
         }
+        
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                OkButton.Focus();
+                OkButtonClick(OkButton, new RoutedEventArgs());
+            }
+            else if (e.Key == Key.Escape)
+            {
+                CancelButton.Focus();
+                CancelButtonClick(CancelButton, new RoutedEventArgs());
+            }
+        }
 
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            this.Action = SearchBoxAction.None;
+            SaveSitting();
+            this.Action = SearchBoxAction.None;            
             this.Close();
         }
 
@@ -67,6 +91,8 @@ namespace Chinese_Word_Analyzer
 
             SearchKeyString = SearchKeyTextBox.Text;
 
+            SaveSitting();
+
             this.Close();
         }
 
@@ -89,17 +115,15 @@ namespace Chinese_Word_Analyzer
             }
         }
 
-        private void OnKeyDown(object sender, KeyEventArgs e)
+        private void SaveSitting()
         {
-            if (e.Key == Key.Return)
+            Properties.Settings.Default.SearchBoxKey = SearchKeyTextBox.Text;
+
+            switch (Action)
             {
-                OkButton.Focus();
-                OkButtonClick(OkButton, new RoutedEventArgs());
-            }
-            else if (e.Key == Key.Escape)
-            {
-                CancelButton.Focus();
-                CancelButtonClick(CancelButton, new RoutedEventArgs());
+                case SearchBoxAction.SearchByRadical: Properties.Settings.Default.SearchBoxType = 2; break;
+                case SearchBoxAction.SearchByMultipleRadical: Properties.Settings.Default.SearchBoxType = 3; break;
+                default: Properties.Settings.Default.SearchBoxType = 1; break;
             }
         }
 

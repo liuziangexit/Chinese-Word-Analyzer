@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -48,8 +50,7 @@ namespace Chinese_Word_Analyzer
                 Multiselect = false
             };
 
-            Nullable<bool> isSelected = box.ShowDialog(this);
-            if (isSelected != true)
+            if (box.ShowDialog(this) != true)
             {
                 MessageBox.Show(App.Current.FindResource("OpenDataSource.OpenFileDialog.NotSelected") as string, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
@@ -62,6 +63,26 @@ namespace Chinese_Word_Analyzer
         {
             if (DataView.Items.Count == 0)
                 return;
+
+            var box = new ExportDataViewBox()
+            {
+                Owner = this
+            };
+            box.ShowDialog();
+
+            if (box.SeparateRowsBy == null || box.SeparateColumnsBy == null || box.ExportTo == null)
+                return;
+
+            try
+            {
+                File.WriteAllText(box.ExportTo,
+                    DeserializationDataView(DataView.View as GridView, DataView.ItemsSource as IList, box.SeparateRowsBy, box.SeparateColumnsBy, box.WithHeader),
+                    Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
         }
 
         private void ApplicationCommandsFind(object sender, ExecutedRoutedEventArgs e)
@@ -71,7 +92,6 @@ namespace Chinese_Word_Analyzer
 
             var box = new SearchBox
             {
-                Title = App.Current.FindResource("SearchBox.Title") as string,
                 Owner = this
             };
             box.ShowDialog();
@@ -86,7 +106,7 @@ namespace Chinese_Word_Analyzer
             ResetStatusText();
 
             void SetStatusRadicalCountTextBlockAsUnavailableFunc() => StatusRadicalCountText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
-            void UpdateDataViewToEmpty() => RefreshDataView(null, null, SetStatusRadicalCountTextBlockAsUnavailableFunc);
+            void UpdateDataViewToEmpty() => RefreshDataView(null, new List<string> { FindResource("DataView.NoResult") as string }, SetStatusRadicalCountTextBlockAsUnavailableFunc);
             switch (box.Action)
             {
                 case SearchBox.SearchBoxAction.SearchByWord: SearchByWord(box.SearchKeyString[0], SetStatusRadicalCountTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
@@ -131,9 +151,11 @@ namespace Chinese_Word_Analyzer
 
         private void ClearDataViewMenuItemClick(object sender, RoutedEventArgs e)
         {
-            DataView.ItemsSource = null;
             DataView.View = null;
-            StatusRadicalCountText.Text = "0";
+            DataView.ItemsSource = null;
+            Radical2Chars.Clear();
+            Char2Radicals.Clear();
+            ResetStatusText();
         }
 
         //视图-接口
@@ -150,10 +172,10 @@ namespace Chinese_Word_Analyzer
                 RefreshDataViewWithChars(Char2Radicals, ResetStatusText);
         }
 
-        private void RefreshDataView(GridView View, IEnumerable ItemSource, Action UpdateInterfaceFunc)
+        private void RefreshDataView(GridView View, IList ItemsSource, Action UpdateInterfaceFunc)
         {
             DataView.View = View;
-            DataView.ItemsSource = ItemSource;
+            DataView.ItemsSource = ItemsSource;
             UpdateInterfaceFunc();
         }
 
@@ -205,9 +227,9 @@ namespace Chinese_Word_Analyzer
 
             var InputRadical2CharsList = InputRadical2Chars.ToList();
             RefreshDataView(View,
-                from kv in InputRadical2CharsList
-                orderby kv.Value.Length descending
-                select kv,
+                (from kv in InputRadical2CharsList
+                 orderby kv.Value.Length descending
+                 select kv).ToList(),
                 UpdateInterfaceFunc);
         }
 
@@ -311,6 +333,60 @@ namespace Chinese_Word_Analyzer
             Radical2Chars = result.Item2;
 
             ClearSearchResult();
+        }
+
+        private string DeserializationDataView(GridView View, IList ItemsSource, string SeparateRowsBy, string SeparateColumnsBy, bool IncludeHeader)
+        {
+            //警告，本函数对数据和UI有较强耦合
+            var ColumnValuePath = (from ColumnInfo in View.Columns
+                                   select (ColumnInfo.DisplayMemberBinding as Binding).Path).ToArray();
+            var ObjType = ItemsSource.GetType().GetGenericArguments()[0];
+            var Builder = new StringBuilder();
+
+            if (IncludeHeader)
+            {
+                for (int i = 0; i < View.Columns.Count; i++)
+                {
+                    Builder.Append(((View.Columns[i].Header as GridViewColumnHeader).Content as TextBlock).Text.Replace(" ", ""));
+                    if (i != ColumnValuePath.Length - 1)
+                        Builder.Append(SeparateColumnsBy);
+                }
+                if (ItemsSource.Count != 0)
+                    Builder.Append(SeparateRowsBy);
+            }
+
+            for (int i = 0; i < ItemsSource.Count; i++)
+            {
+                for (int i2 = 0; i2 < ColumnValuePath.Length; i2++)
+                {
+                    bool ShouldBreak = false;
+                    var Paths = ColumnValuePath[i2].Path.Split('.');
+                    var Obj = ItemsSource[i];
+                    foreach (String part in Paths)
+                    {
+                        if (part.IndexOf('[') == -1)
+                        {
+                            Obj = Obj.GetType().GetProperty(part).GetValue(Obj, null);
+                        }
+                        else
+                        {
+                            IList ListObj = ObjType.GetProperty(part.Substring(0, part.IndexOf('['))).GetValue(Obj, null) as IList;
+                            var Index = int.Parse(part.Substring(part.IndexOf('[') + 1, part.IndexOf(']') - part.IndexOf('[') - 1));
+                            if (Index > ListObj.Count - 2)
+                                ShouldBreak = true;
+                            Obj = ListObj[Index];
+                        }
+                    }
+                    Builder.Append(Obj);
+                    if (ShouldBreak)
+                        break;
+                    if (i2 != ColumnValuePath.Length - 1)
+                        Builder.Append(SeparateColumnsBy);
+                }
+                if (i != ItemsSource.Count - 1)
+                    Builder.Append(SeparateRowsBy);
+            }
+            return Builder.ToString();
         }
 
         //多语言(控制器&数据)

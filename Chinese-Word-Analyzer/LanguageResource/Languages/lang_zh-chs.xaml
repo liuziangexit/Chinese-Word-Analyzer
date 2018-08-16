@@ -22,7 +22,7 @@
 
     <sys:String x:Key="File">文件</sys:String>
     <sys:String x:Key="File.OpenDataSource">打开数据源</sys:String>
-    <sys:String x:Key="File.SaveDataView">保存数据视图</sys:String>
+    <sys:String x:Key="File.ExportDataView">导出数据视图</sys:String>
     <sys:String x:Key="File.ClearDataView">清空数据视图</sys:String>
 
     <sys:String x:Key="Analysis">分析</sys:String>
@@ -40,11 +40,19 @@
     <sys:String x:Key="SearchBox.SearchByRadicalDescription">查找包含这个部首的汉字。</sys:String>
     <sys:String x:Key="SearchBox.SearchByMultipleRadicalDescription">查找包含所有这些部首的汉字。</sys:String>
 
+    <sys:String x:Key="ExportDataView.Title">导出数据视图</sys:String>
+    <sys:String x:Key="ExportDataView.Description">导出当前显示的数据视图到文件。</sys:String>
+    <sys:String x:Key="ExportDataView.SaveFileDialog.Title">导出到...</sys:String>
+    <sys:String x:Key="ExportDataView.SeparateRowsBy">行分隔</sys:String>
+    <sys:String x:Key="ExportDataView.SeparateColumnsBy">纵行分隔</sys:String>
+    <sys:String x:Key="ExportDataView.WithHeader">包含视图头</sys:String>
+
     <sys:String x:Key="DataView.Header0">汉字</sys:String>
-    <sys:String x:Key="DataView.HeaderN">部首</sys:String>
+    <sys:String x:Key="DataView.HeaderN">组成</sys:String>
     <sys:String x:Key="DataView.Radicals.Header0">部首</sys:String>
     <sys:String x:Key="DataView.Radicals.Header1">次数</sys:String>
     <sys:String x:Key="DataView.Radicals.Header2">引用此部首的汉字</sys:String>
+    <sys:String x:Key="DataView.NoResult">No Result</sys:String>
 
     <sys:String x:Key="More">更多</sys:String>
     <sys:String x:Key="More.Language">语言</sys:String>

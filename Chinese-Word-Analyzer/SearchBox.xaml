@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chinese_Word_Analyzer"
         mc:Ignorable="d"
-        Title="{DynamicResource SearchBox.Title}" Background="LightGray" Height="250" Width="380" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Loaded="OnLoaded" KeyDown="OnKeyDown">
+        Title="{DynamicResource SearchBox.Title}" Background="LightGray" Height="250" Width="380" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Loaded="OnLoaded" KeyDown="OnKeyDown" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
