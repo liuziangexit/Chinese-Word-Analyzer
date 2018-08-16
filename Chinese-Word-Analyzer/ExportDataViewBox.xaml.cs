@@ -99,7 +99,7 @@ namespace Chinese_Word_Analyzer
 
             Close();
         }
-        
+
         public string SeparateRowsBy { get; set; }
         public string SeparateColumnsBy { get; set; }
         public string ExportTo { get; set; }

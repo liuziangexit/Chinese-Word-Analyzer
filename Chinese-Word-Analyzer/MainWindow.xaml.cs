@@ -105,22 +105,22 @@ namespace Chinese_Word_Analyzer
 
             ResetStatusText();
 
-            void SetStatusRadicalCountTextBlockAsUnavailableFunc() => StatusRadicalCountText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
-            void UpdateDataViewToEmpty()
+            void UpdateInterfaceWhenHasResult() => StatusRadicalCountText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
+            void UpdateInterfaceWhenNoResult()
             {
                 var NoResultTextBlock = new TextBlock();
                 NoResultTextBlock.SetResourceReference(TextBlock.TextProperty, "DataView.NoResult");
                 RefreshDataView(null, new List<ListViewItem> { new ListViewItem { Content = NoResultTextBlock, HorizontalAlignment = HorizontalAlignment.Center } },
-                    ()=> {
-                        SetStatusRadicalCountTextBlockAsUnavailableFunc();
+                    () => {
+                        StatusRadicalCountText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
                         StatusCharCountText.SetResourceReference(TextBlock.TextProperty, "StatusBar.Unavailable");
                     });
             }
             switch (box.Action)
             {
-                case SearchBox.SearchBoxAction.SearchByWord: SearchByWord(box.SearchKeyString[0], SetStatusRadicalCountTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
-                case SearchBox.SearchBoxAction.SearchByRadical: SearchByRadical(box.SearchKeyString[0], SetStatusRadicalCountTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
-                case SearchBox.SearchBoxAction.SearchByMultipleRadical: SearchByMultipleRadical(box.SearchKeyString, SetStatusRadicalCountTextBlockAsUnavailableFunc, UpdateDataViewToEmpty); break;
+                case SearchBox.SearchBoxAction.SearchByWord: SearchByWord(box.SearchKeyString[0], UpdateInterfaceWhenHasResult, UpdateInterfaceWhenNoResult); break;
+                case SearchBox.SearchBoxAction.SearchByRadical: SearchByRadical(box.SearchKeyString[0], UpdateInterfaceWhenHasResult, UpdateInterfaceWhenNoResult); break;
+                case SearchBox.SearchBoxAction.SearchByMultipleRadical: SearchByMultipleRadical(box.SearchKeyString, UpdateInterfaceWhenHasResult, UpdateInterfaceWhenNoResult); break;
             }
         }
 
@@ -168,7 +168,7 @@ namespace Chinese_Word_Analyzer
         }
 
         //视图-接口
-        
+
         private void ResetStatusText()
         {
             StatusRadicalCountText.Text = Radical2Chars.Keys.Count.ToString();

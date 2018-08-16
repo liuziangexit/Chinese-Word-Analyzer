@@ -42,7 +42,7 @@ namespace Chinese_Word_Analyzer
             var hwnd = new WindowInteropHelper(this).Handle;
             IconRemover.SetWindowLong(hwnd, IconRemover.GWL_STYLE, IconRemover.GetWindowLong(hwnd, IconRemover.GWL_STYLE) & ~IconRemover.WS_SYSMENU);
         }
-        
+
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
@@ -60,7 +60,7 @@ namespace Chinese_Word_Analyzer
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
             SaveSitting();
-            this.Action = SearchBoxAction.None;            
+            this.Action = SearchBoxAction.None;
             this.Close();
         }
 
