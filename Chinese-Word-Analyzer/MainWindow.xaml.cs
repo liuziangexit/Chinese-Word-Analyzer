@@ -187,7 +187,12 @@ namespace Chinese_Word_Analyzer
                 View.Columns.Add(new GridViewColumn { Header = new GridViewColumnHeader { Content = Header2Text, HorizontalContentAlignment = HorizontalAlignment.Left }, DisplayMemberBinding = new Binding("Value") });
             }
 
-            RefreshDataView(View, InputRadical2Chars.ToList().OrderByDescending(kv => kv.Value.Length), UpdateInterfaceFunc);
+            var InputRadical2CharsList = InputRadical2Chars.ToList();
+            RefreshDataView(View,
+                from kv in InputRadical2CharsList
+                orderby kv.Value.Length descending
+                select kv,
+                UpdateInterfaceFunc);
         }
 
         //控制器-主要功能
