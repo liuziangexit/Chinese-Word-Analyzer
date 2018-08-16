@@ -58,8 +58,17 @@ namespace Chinese_Word_Analyzer
             StoreAndDisplayDataSource(LoadDataSource(box.FileName));
         }
 
+        private void ApplicationCommandsSave(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (DataView.Items.Count == 0)
+                return;
+        }
+
         private void ApplicationCommandsFind(object sender, ExecutedRoutedEventArgs e)
         {
+            if (DataView.Items.Count == 0)
+                return;
+
             var box = new SearchBox
             {
                 Title = App.Current.FindResource("SearchBox.Title") as string,
@@ -118,6 +127,13 @@ namespace Chinese_Word_Analyzer
         {
             var box = new About() { Owner = this };
             box.ShowDialog();
+        }
+
+        private void ClearDataViewMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            DataView.ItemsSource = null;
+            DataView.View = null;
+            StatusRadicalCountText.Text = "0";
         }
 
         //视图-接口

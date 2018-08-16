@@ -56,6 +56,7 @@
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChineseWordDataSource.cs" />
+    <Compile Include="IsEnabledConverter.cs" />
     <Compile Include="SearchBox.xaml.cs">
       <DependentUpon>SearchBox.xaml</DependentUpon>
     </Compile>

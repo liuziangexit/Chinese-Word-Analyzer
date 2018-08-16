@@ -10,9 +10,11 @@
         <Style x:Key="SeparatorStyle" TargetType="{x:Type Separator}">
             <Setter Property="Background" Value="#C0C0C0"/>
         </Style>
+        <local:IsEnabledConverter x:Key="IsEnabledConverter"/>
     </Window.Resources>
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Open" Executed="ApplicationCommandsOpen"/>
+        <CommandBinding Command="ApplicationCommands.Save" Executed="ApplicationCommandsSave"/>
         <CommandBinding Command="ApplicationCommands.Find" Executed="ApplicationCommandsFind"/>
     </Window.CommandBindings>
     <Grid>
@@ -24,12 +26,15 @@
         <Menu>
             <MenuItem Header="{DynamicResource File}" Height="25">
                 <MenuItem Header="{DynamicResource File.OpenDataSource}" Name="OpenDataSourceMenuItem" Command="ApplicationCommands.Open" />
+                <MenuItem Header="{DynamicResource File.SaveDataView}" Name="SaveDataViewMenuItem" Command="ApplicationCommands.Save" IsEnabled="{Binding ElementName=DataView, Path=Items.Count,Converter={StaticResource IsEnabledConverter} }"  />
+                <Separator Style="{StaticResource  SeparatorStyle}"/>
+                <MenuItem Header="{DynamicResource File.ClearDataView}" Name="ClearDataViewMenuItem" Click="ClearDataViewMenuItemClick" IsEnabled="{Binding ElementName=DataView, Path=Items.Count,Converter={StaticResource IsEnabledConverter} }"  />
             </MenuItem>
             <MenuItem Header="{DynamicResource Analysis}">
-                <MenuItem Header="{DynamicResource Analysis.Search}" Name="SearchMenuItem" Command="ApplicationCommands.Find" />
-                <MenuItem Header="{DynamicResource Analysis.DisplayRadicalsByNumberOfReferences}" Name="DisplayRadicalsByNumberOfReferencesMenuItem" Click="DisplayRadicalsByNumberOfReferencesMenuItemClick" />
+                <MenuItem Header="{DynamicResource Analysis.Search}" Name="SearchMenuItem" Command="ApplicationCommands.Find" IsEnabled="{Binding ElementName=DataView, Path=Items.Count,Converter={StaticResource IsEnabledConverter} }" />
+                <MenuItem Header="{DynamicResource Analysis.DisplayRadicalsByNumberOfReferences}" Name="DisplayRadicalsByNumberOfReferencesMenuItem" Click="DisplayRadicalsByNumberOfReferencesMenuItemClick" IsEnabled="{Binding ElementName=DataView, Path=Items.Count,Converter={StaticResource IsEnabledConverter} }" />
                 <Separator Style="{StaticResource  SeparatorStyle}"/>
-                <MenuItem Header="{DynamicResource Analysis.ClearSearchResult}" Name="ClearSearchResultMenuItem" Click="ClearSearchResultMenuItemClick"/>
+                <MenuItem Header="{DynamicResource Analysis.ClearSearchResult}" Name="ClearSearchResultMenuItem" Click="ClearSearchResultMenuItemClick" IsEnabled="{Binding ElementName=DataView, Path=Items.Count,Converter={StaticResource IsEnabledConverter} }"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource More}">
                 <MenuItem Header="{DynamicResource More.About}" Click="AboutMenuItemClick"/>

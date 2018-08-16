@@ -22,6 +22,8 @@
 
     <sys:String x:Key="File">文件</sys:String>
     <sys:String x:Key="File.OpenDataSource">打开数据源</sys:String>
+    <sys:String x:Key="File.SaveDataView">保存数据视图</sys:String>
+    <sys:String x:Key="File.ClearDataView">清空数据视图</sys:String>
 
     <sys:String x:Key="Analysis">分析</sys:String>
     <sys:String x:Key="Analysis.Search">查找所有引用</sys:String>
