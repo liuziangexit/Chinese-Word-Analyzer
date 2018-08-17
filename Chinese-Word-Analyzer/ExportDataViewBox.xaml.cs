@@ -24,7 +24,7 @@ namespace Chinese_Word_Analyzer
         {
             InitializeComponent();
 
-            SeparateColumnsByTextBox.Text = Properties.Settings.Default.ExportDataViewBoxSeparateColumnsBy;
+            SeparateColumnsByTextBox.Text = Properties.Settings.Default.ExportDataViewBoxSeparateColumnsBy.Replace(@"\whitespace", " ");
             SeparateRowsByTextBox.Text = Properties.Settings.Default.ExportDataViewBoxSeparateRowsBy;
             WithHeaderCheckBox.IsChecked = Properties.Settings.Default.ExportDataViewBoxWithHeader;
         }
@@ -42,7 +42,7 @@ namespace Chinese_Word_Analyzer
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Properties.Settings.Default.ExportDataViewBoxSeparateColumnsBy = SeparateColumnsByTextBox.Text;
+            Properties.Settings.Default.ExportDataViewBoxSeparateColumnsBy = SeparateColumnsByTextBox.Text.Replace(" ", @"\whitespace");
             Properties.Settings.Default.ExportDataViewBoxSeparateRowsBy = SeparateRowsByTextBox.Text;
             Properties.Settings.Default.ExportDataViewBoxWithHeader = WithHeaderCheckBox.IsChecked == true;
         }
