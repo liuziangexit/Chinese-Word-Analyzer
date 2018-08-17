@@ -29,9 +29,9 @@
 您必须阅读并遵守 DataSource 文件夹中的 LICENSE 文件所列条款，才可以使用该文件夹中的数据源。
 <h2>下载</h2>
 https://github.com/liuziangexit/Chinese-Word-Analyzer/releases<br>
-https://pan.baidu.com/s/18i8MZDc8VEbB5kDtb_oSKw<br>
-https://liuziangexit.com/resource/Chinese-Word-Analyzer.rar<br>
-https://sr2.liuziangexit.com/resource/Chinese-Word-Analyzer.rar
+https://pan.baidu.com/s/1Eejehubb-QZylnrw6G3fzg<br>
+https://liuziangexit.com/resource/Chinese-Word-Analyzer.zip<br>
+https://sr2.liuziangexit.com/resource/Chinese-Word-Analyzer.zip
 <h2>数据源来自</h2>
 <h4>漢語拆字字典 - https://github.com/kfcd/chaizi</h4>
 <h4>开放词典 - http://www.kaifangcidian.com/</h4>
