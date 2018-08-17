@@ -307,21 +307,25 @@ namespace Chinese_Word_Analyzer
 
         private Tuple<Dictionary<char, List<string>>, Dictionary<char, string>> LoadDataSource(string FileName)
         {
-            var Data = new ChineseWordDataSource();
+            var C2R = new Dictionary<char, List<string>>();
+            string[] FileContent = File.ReadAllLines(FileName, Encoding.UTF8);
             try
             {
-                Data.Load(FileName);
+                foreach (var p in FileContent)
+                {
+                    string[] cols = p.Split('\t');
+                    var addMe = new KeyValuePair<char, List<string>>(cols[0][0], new List<string>(cols.Length - 1));
+                    for (int i = 1; i < cols.Length; i++)
+                        addMe.Value.Add(cols[i].Split(' ').Aggregate((current, next) => current + next));
+                    C2R[addMe.Key] = addMe.Value;
+                }
             }
             catch (Exception ex)
             {
-                Data = null;
+                C2R = null;
                 MessageBox.Show(ex.Message, App.Current.FindResource("General.Error") as string, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return new Tuple<Dictionary<char, List<string>>, Dictionary<char, string>>(null, null);
             }
-
-            var C2R = new Dictionary<char, List<string>>();
-            foreach (var p in Data.WordDetails)
-                C2R[p.Word] = p.Radicals;
 
             var R2C = new Dictionary<char, string>();
             foreach (var kv in C2R)
