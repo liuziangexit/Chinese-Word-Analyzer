@@ -242,6 +242,59 @@ namespace Chinese_Word_Analyzer
                 UpdateInterfaceFunc);
         }
 
+        private string DeserializationDataView(GridView View, IList ItemsSource, string SeparateRowsBy, string SeparateColumnsBy, bool IncludeHeader)
+        {
+            var ColumnValuePath = (from ColumnInfo in View.Columns
+                                   select (ColumnInfo.DisplayMemberBinding as Binding).Path).ToArray();
+            var ObjType = ItemsSource.GetType().GetGenericArguments()[0];
+            var Builder = new StringBuilder();
+
+            if (IncludeHeader)
+            {
+                for (int i = 0; i < View.Columns.Count; i++)
+                {
+                    Builder.Append(((View.Columns[i].Header as GridViewColumnHeader).Content as TextBlock).Text.Replace(" ", ""));
+                    if (i != ColumnValuePath.Length - 1)
+                        Builder.Append(SeparateColumnsBy);
+                }
+                if (ItemsSource.Count != 0)
+                    Builder.Append(SeparateRowsBy);
+            }
+
+            for (int i = 0; i < ItemsSource.Count; i++)
+            {
+                for (int i2 = 0; i2 < ColumnValuePath.Length; i2++)
+                {
+                    bool ShouldBreak = false;
+                    var Paths = ColumnValuePath[i2].Path.Split('.');
+                    var Obj = ItemsSource[i];
+                    foreach (String part in Paths)
+                    {
+                        if (part.IndexOf('[') == -1)
+                        {
+                            Obj = Obj.GetType().GetProperty(part).GetValue(Obj, null);
+                        }
+                        else
+                        {
+                            IList ListObj = ObjType.GetProperty(part.Substring(0, part.IndexOf('['))).GetValue(Obj, null) as IList;
+                            var Index = int.Parse(part.Substring(part.IndexOf('[') + 1, part.IndexOf(']') - part.IndexOf('[') - 1));
+                            if (Index > ListObj.Count - 2)
+                                ShouldBreak = true;
+                            Obj = ListObj[Index];
+                        }
+                    }
+                    Builder.Append(Obj);
+                    if (ShouldBreak)
+                        break;
+                    if (i2 != ColumnValuePath.Length - 1)
+                        Builder.Append(SeparateColumnsBy);
+                }
+                if (i != ItemsSource.Count - 1)
+                    Builder.Append(SeparateRowsBy);
+            }
+            return Builder.ToString();
+        }
+
         //控制器-主要功能
 
         private void SearchByWord(char Word, Action UpdateStatusRadicalCountTextFunc, Action UpdateDataViewToEmpty)
@@ -352,61 +405,7 @@ namespace Chinese_Word_Analyzer
 
             ClearSearchResult();
         }
-
-        private string DeserializationDataView(GridView View, IList ItemsSource, string SeparateRowsBy, string SeparateColumnsBy, bool IncludeHeader)
-        {
-            //警告，本函数对数据和UI有较强耦合
-            var ColumnValuePath = (from ColumnInfo in View.Columns
-                                   select (ColumnInfo.DisplayMemberBinding as Binding).Path).ToArray();
-            var ObjType = ItemsSource.GetType().GetGenericArguments()[0];
-            var Builder = new StringBuilder();
-
-            if (IncludeHeader)
-            {
-                for (int i = 0; i < View.Columns.Count; i++)
-                {
-                    Builder.Append(((View.Columns[i].Header as GridViewColumnHeader).Content as TextBlock).Text.Replace(" ", ""));
-                    if (i != ColumnValuePath.Length - 1)
-                        Builder.Append(SeparateColumnsBy);
-                }
-                if (ItemsSource.Count != 0)
-                    Builder.Append(SeparateRowsBy);
-            }
-
-            for (int i = 0; i < ItemsSource.Count; i++)
-            {
-                for (int i2 = 0; i2 < ColumnValuePath.Length; i2++)
-                {
-                    bool ShouldBreak = false;
-                    var Paths = ColumnValuePath[i2].Path.Split('.');
-                    var Obj = ItemsSource[i];
-                    foreach (String part in Paths)
-                    {
-                        if (part.IndexOf('[') == -1)
-                        {
-                            Obj = Obj.GetType().GetProperty(part).GetValue(Obj, null);
-                        }
-                        else
-                        {
-                            IList ListObj = ObjType.GetProperty(part.Substring(0, part.IndexOf('['))).GetValue(Obj, null) as IList;
-                            var Index = int.Parse(part.Substring(part.IndexOf('[') + 1, part.IndexOf(']') - part.IndexOf('[') - 1));
-                            if (Index > ListObj.Count - 2)
-                                ShouldBreak = true;
-                            Obj = ListObj[Index];
-                        }
-                    }
-                    Builder.Append(Obj);
-                    if (ShouldBreak)
-                        break;
-                    if (i2 != ColumnValuePath.Length - 1)
-                        Builder.Append(SeparateColumnsBy);
-                }
-                if (i != ItemsSource.Count - 1)
-                    Builder.Append(SeparateRowsBy);
-            }
-            return Builder.ToString();
-        }
-
+        
         //多语言(控制器&数据)
 
         private void LoadRegionCodes()
