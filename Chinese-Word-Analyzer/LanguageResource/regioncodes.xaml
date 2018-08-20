@@ -3,7 +3,7 @@
     xmlns:local="clr-namespace:Chinese_Word_Analyzer" 
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!--- 区域性名称与对应的语言文件 -->
+    <!--- 区域性名称与对应的语言可读名称 -->
     <sys:String x:Key="zh-Hans">简体中文</sys:String>
     <sys:String x:Key="zh">简体中文</sys:String>
     <sys:String x:Key="zh-CN">简体中文</sys:String>
